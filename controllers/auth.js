@@ -13,15 +13,14 @@
 //Get validator marchedData 
 const { matchedData } = require("express-validator");
 //Get the model instance
-const { usersModel } = require("../models");
+const { userModel } = require("../models");
 //Get the errors
 const { handleHttpError } = require("../utils/handleError");
 //Get libs for encrypt data
 const {compare, encrypt} = require("../utils/handlePassword");
 //Get functions for token
 const  {singToken} = require("../utils/handleJwt");
-const getProperties  = require("../utils/handlePropEngine");
-const propertiesKey = getProperties();
+ 
 
 
 /**
@@ -34,26 +33,32 @@ const loginUser = async (req, res) =>{
     try {
 
         const body = matchedData(req);
-        const user = await usersModel.findOne({ email: body.email });
-        
+        const {email} = body;
+         
+        const user = await userModel.findOne({ 
+            where: {email}
+        });
+         
         if (!user) {
           handleErrorResponse(res, "USER_NOT_EXISTS", 404);
           return;
         }
         const checkPassword = await compare(body.password, user.password);
-    
+        
         if (!checkPassword) {
           handleErrorResponse(res, "PASSWORD_INVALID", 402);
           return;
         }
     
         const tokenJwt = await singToken(user);
-    
+        
         const data = {
           token: tokenJwt,
           user: user,
         };
-        data.set('password',undefined, {strict:false}); //Do not return password 
+        
+        //data.set("password",undefined, {strict:false}); //Do not return password  
+        console.log(data);
         res.send({ data });
 
     } catch (e) {
@@ -68,7 +73,7 @@ const loginUser = async (req, res) =>{
  */ 
 const getUsers = async (req, res) => {
     try {
-        const data = await usersModel.find({});
+        const data = await userModel.find({});
         data.set('password',undefined, {strict:false}); //Do not return password
         res.send({data});
     } catch (e) {
@@ -86,7 +91,7 @@ const getUser = async (req, res) =>{
         req = matchedData(req);
         const {id} = req;
         console.log(id);
-        const data = await usersModel.findOne({[propertiesKey.id]:id});
+        const data = await userModel.findOne({[propertiesKey.id]:id});
         data.set("password", undefined,{strict:false}); //Do not return password
         res.send({data});
     } catch (e) {
@@ -101,16 +106,18 @@ const getUser = async (req, res) =>{
  */
 const createUser = async (req, res) =>{
     try {
+
         req = matchedData(req);
         const password = await encrypt(req.password) //Encrypt password
         const body = {...req,password}
-        const dataUser = await usersModel.create(body); //Create user
+        
+        const dataUser = await userModel.create(body); //Create user
+       
         dataUser.set("password", undefined,{strict:false}); //Do not return password
         const data = {
             token: await singToken(dataUser),
             user: dataUser
         }
-
         res.send({data}); //Return data
     } catch (e) {
         handleHttpError(res,e);
@@ -136,7 +143,7 @@ const updateUser = async(req, res) =>{
          * }
          */
         const {id, ...body} = matchedData(req);
-        const data = await itemsModel.findOneAndUpdate(
+        const data = await userModel.findOneAndUpdate(
             id,body
         );
         res.send({data});
@@ -154,7 +161,7 @@ const deleteUser = async(req, res) =>{
     try {
         req = matchedData(req);
         const {id} = req;
-        const data = await itemsModel.deleteOne({_id:id});
+        const data = await userModel.deleteOne({where:id});
         res.send({data});
     } catch (e) {
         handleHttpError(res,e);

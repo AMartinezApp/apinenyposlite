@@ -12,8 +12,7 @@
 const jwt = require("jsonwebtoken");
 const { updateLanguageServiceSourceFile } = require("typescript");
 const JWT_SECRET =  process.env.JWT_SECRET;
-const getProperties  = require("../utils/handlePropEngine");
-const propertiesKey = getProperties();
+ 
 
 /**
  * Pasing token string user
@@ -24,8 +23,8 @@ const propertiesKey = getProperties();
 const singToken= async (user)=>{
     const sing = jwt.sign(
         {
-            [propertiesKey.id]: user[propertiesKey.id],
-            role: user.role,
+            id: user.id,
+            idrole: user.idrole,
         },
         JWT_SECRET,
         {

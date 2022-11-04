@@ -1,6 +1,6 @@
  /** 
  * =================================================================
- * ROUTE FILE FOR ITEMS MODEL
+ * ROUTE FILE FOR PRODUCT MODEL
  * =================================================================
  * @author AMartínezDev, I.E.R.L 
  * @copyright Copyright (c) 2021-2030   
@@ -13,10 +13,14 @@ const express = require('express');
 const router = express.Router();
 
 //Gets controllers functions
-const { getItems, getItem, create, update, deleteItem } = require("../controllers/items");
+const { getProductCategorys,
+    getProductCategory,
+    createProductCategory,
+    updateProductCategory,
+    deleteProductCategory } = require("../controllers/productcategory");
 
 //Gets validation functions
-const { validatorCreateItem, validatorIdItem } = require("../validators/items");
+const { validatorCreateProductCategory, validatorIdProductCategory } = require("../validators/productcategory");
 
 //Gets Middleware functions
 /**
@@ -25,15 +29,15 @@ const { validatorCreateItem, validatorIdItem } = require("../validators/items");
 const { checkAuth } = require("../middleware/session");
 
 //Get items list 
-router.get('/', getItems);
+router.get('/', getProductCategorys);
 
 //Get item details
-router.get('/:id', validatorIdItem ,getItem);
+router.get('/:id', validatorIdProductCategory ,getProductCategory);
 //Create item
-router.post('/', validatorCreateItem ,create);
+router.post('/', validatorCreateProductCategory ,createProductCategory);
 //Update item
-router.put('/:id', validatorIdItem, validatorCreateItem, update);
+router.put('/:id', validatorIdProductCategory, validatorCreateProductCategory, updateProductCategory);
 //Delete item
-router.delete('/:id', validatorIdItem,deleteItem);
+router.delete('/:id', validatorIdProductCategory,deleteProductCategory);
 
 module.exports = router;

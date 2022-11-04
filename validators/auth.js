@@ -15,11 +15,12 @@
  const validateResults = require("../utils/handleValidator")
  
  //Validate when are creating
- const validatorCreate =[
+ const validatorCreateUser =[
      check("name").exists().notEmpty().isLength({min:4, max:50}),
      check("phone").exists().notEmpty().isLength({min:4, max:50}),
      check("email").exists().notEmpty().isEmail().isLength({min:4, max:50}),
-     check("password").exists().notEmpty().isLength({min:4, max:255}),
+     check("password").exists().notEmpty().isLength({min:4, max:500}),
+     check("idrole").exists().notEmpty().isNumeric(),
      (req, res, next) =>{
          return validateResults(req, res, next);
      }
@@ -28,18 +29,18 @@
  //Validate when are login
  const validatorLogin =[
     check("email").exists().notEmpty().isEmail(),
-    check("password").exists().notEmpty().isLength({min:4, max:15}),
+    check("password").exists().notEmpty().isLength({min:4, max:500}),
     (req, res, next) =>{
         return validateResults(req, res, next);
     }
 ];
  
- //Validate when get, delete and update item exists
- const validatorIdItem =[
+ //Validate when get, delete and update User exists
+ const validatorIdUser =[
      check("id").exists().notEmpty(),
      (req, res, next) =>{
          return validateResults(req, res, next);
      }
  ];
  
- module.exports = { validatorCreate , validatorIdItem, validatorLogin };
+ module.exports = { validatorCreateUser , validatorIdUser, validatorLogin };

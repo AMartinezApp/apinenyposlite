@@ -9,7 +9,6 @@
  * @link http://amartinezdev.com/nenypos/api     
  * */
 
-
 const express = require('express');
 const fs = require('fs');
 const router = express.Router();
@@ -26,9 +25,6 @@ fs.readdirSync(PATH_ROUTES).filter((file) =>{
     if (name !== 'index'){
         console.log(`Cargando ruta de: ${name} `);
         router.use(`/${name}`,require(`./${file}`)) //TODO https://localhost:3000/api/items
-       
     }
 });
-
-
 module.exports = router;

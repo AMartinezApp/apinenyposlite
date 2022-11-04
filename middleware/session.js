@@ -14,33 +14,27 @@ const { handleHttpError } = require("../utils/handleError");
 //Get the token helper
 const { verifyToken } = require("../utils/handleJwt");
 
-//Get the propertiesKey for dainaming id on db
-const getProperties  = require("../utils/handlePropEngine");
-const propertiesKey = getProperties();
-
 //Get the model instance
-const { usersModel } = require("../models");
+const { userModel } = require("../models");
  
 
 const checkAuth = async (req, res, next) => {
   try {
     if (!req.headers.authorization) {
-      handleHttpError(res, "NOT_ALLOW", 409);
+      handleHttpError(res, "NEED_AUTHORIZATION", 409);
       return;
     }
     const token = req.headers.authorization.split(" ").pop();
     const tokenData = await verifyToken(token);
 
     if (!tokenData) {
-      handleHttpError(res, "NOT_ALLOW", 409);
+      handleHttpError(res, "NEED_TOKEN", 409);
       return;
     };
-
-    const query = {
-      [propertiesKey.id]:tokenData[propertiesKey.id]
-    };
-
-    const user = await usersModel.findOne({query});
+    const {id} = tokenData;
+    const user = await userModel.findOne({
+      where: id
+    });
     req.user = user;
     next();
     
@@ -49,4 +43,4 @@ const checkAuth = async (req, res, next) => {
   }
 };
 
-module.exports = checkAuth;
+module.exports =  checkAuth ;

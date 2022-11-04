@@ -1,8 +1,9 @@
 const { sequelize } = require("../../config/mysql");
 const { DataTypes } = require("sequelize");
+ 
 
-const Item = sequelize.define(
-    "items",
+const Product =  sequelize.define(
+    "products",
     {
         barcode:{
             type:DataTypes.CHAR(50),
@@ -12,7 +13,7 @@ const Item = sequelize.define(
             type:DataTypes.CHAR(50),
             allowNull:false,
         },
-        iditemcategory:{
+        idcategory:{
             type:DataTypes.INTEGER(11),
             allowNull:false,
         },
@@ -28,7 +29,7 @@ const Item = sequelize.define(
             type:DataTypes.FLOAT(12,2),
             allowNull:false,
         },
-        iditemstore:{
+        idstore:{
             type:DataTypes.INTEGER(11),
             allowNull:false,
         },
@@ -39,6 +40,7 @@ const Item = sequelize.define(
         status:{
             type:DataTypes.ENUM('A','D'),
             allowNull:false,
+            defaultValue:'A'
         },
 
     },
@@ -46,20 +48,22 @@ const Item = sequelize.define(
         timestamps: true,
     }
 );
-module.exports = Item;
 
+ 
+ 
+module.exports = Product;
 
-
-// CREATE TABLE `dbnenyposlite_v_1`.`items` (
+// CREATE TABLE `dbnenyposlite_v_1`.`products` (
 //     `id` INT NOT NULL AUTO_INCREMENT,
 //     `barcode` CHAR(50) NOT NULL,
 //     `name` CHAR(50) NOT NULL,
-//     `iditemcategory` INT NOT NULL,
+//     `idcategory` INT NOT NULL,
 //     `idtax` INT NOT NULL,
 //     `cost` FLOAT NOT NULL,
 //     `price` FLOAT NOT NULL,
-//     `iditemstore` INT NOT NULL,
+//     `idstore` INT NOT NULL,
 //     `iduser` INT NOT NULL,
 //     `status` ENUM('A', 'D') NOT NULL DEFAULT 'A',
 // PRIMARY KEY (`id`));
-  
+
+

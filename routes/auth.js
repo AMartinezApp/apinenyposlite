@@ -16,17 +16,17 @@
  const { getUsers, getUser, createUser, updateUser, deleteUser, loginUser } = require("../controllers/auth");
  
  //Gets validation functions
- const { validatorCreate, validatorIdItem , validatorLogin} = require("../validators/auth");
+ const { validatorCreateUser, validatorIdUser , validatorLogin} = require("../validators/auth");
  
 
  //Get user list 
  //router.get('/', getUsers);
  
  //Get user details
- //router.get('/:id', validatorIdItem ,getUser);
+ //router.get('/:id', validatorIdUser ,getUser);
  
  //Create user
- router.post('/register', validatorCreate ,createUser);
+ router.post('/register', validatorCreateUser ,createUser);
 
  //Login user
  router.post('/login', validatorLogin ,loginUser);

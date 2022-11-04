@@ -1,6 +1,6 @@
 /** 
  * =================================================================
- * ONTROLLER FILE FOR ITEMS MODEL  
+ * CONTROLLER FILE FOR ITEMS MODEL  
  * =================================================================
  * @author AMartínezDev, I.E.R.L 
  * @copyright Copyright (c) 2021-2030   
@@ -12,26 +12,26 @@
 //Get validator marchedData 
 const { matchedData } = require("express-validator");
 //Get the model instance
-const { itemsModel } = require("../models");
+const { productCategoryModel } = require("../models");
 //Get the errors helper
 const { handleHttpError } = require("../utils/handleError");
 
 // Get List of items 
-const getItems = async (req, res) => {
+const getProductCategorys = async (req, res) => {
     try {
-        const data = await itemsModel.findAll({});
+        const data = await productCategoryModel.findAll(); 
         res.send({data});
     } catch (e) {
         handleHttpError(res,e);
     }
 };
 
-//Get item details
-const getItem = async (req, res) =>{
+//Get product details
+const getProductCategory = async (req, res) =>{
     try {
         req = matchedData(req);
         const {id} = req;
-        const data = await itemsModel.findOne({
+        const data = await productCategoryModel.findOne({
             where: {id}
         });
         if(!data)
@@ -43,24 +43,24 @@ const getItem = async (req, res) =>{
 };
 
 
-//Insert item
-const create = async (req, res) =>{
+//Insert product 
+const createProductCategory = async (req, res) =>{
     try {
         const body = matchedData(req);
-        const data = await itemsModel.create(body);
+        const data = await productCategoryModel.create(body);
         res.send({data});
     } catch (e) {
         handleHttpError(res,e);
     }   
 };
 
-//Update item
-const update = async(req, res) =>{
+//Update product
+const updateProductCategory = async(req, res) =>{
     try {
          
         const {id} = req.params;
             const body = req.body;
-            const data = await itemsModel.findOne({
+            const data = await productCategoryModel.findOne({
                 where:{ id }
             })
             data.set(body);
@@ -72,12 +72,12 @@ const update = async(req, res) =>{
     }   
 };
 
-//Delete item
-const deleteItem = async(req, res) =>{
+//Delete product
+const deleteProductCategory = async(req, res) =>{
     try {
         req = matchedData(req);
         const {id} = req;
-        const data = await itemsModel.destroy({
+        const data = await productCategoryModel.destroy({
             where:{
                 id
             }
@@ -88,4 +88,4 @@ const deleteItem = async(req, res) =>{
     } 
 };
 
-module.exports = {getItems,getItem,create,update,deleteItem};
+module.exports = {getProductCategorys,getProductCategory,createProductCategory,updateProductCategory,deleteProductCategory};
