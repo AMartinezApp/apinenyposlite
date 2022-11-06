@@ -1,171 +1,169 @@
-/** 
+/**
  * =================================================================
- * CONTROLLER FILE FOR USER MODEL   
+ * CONTROLLER FILE FOR USER MODEL
  * =================================================================
- * @author AMartínezDev, I.E.R.L 
- * @copyright Copyright (c) 2021-2030   
+ * @author AMartínezDev, I.E.R.L
+ * @copyright Copyright (c) 2021-2030
  * @license http://opensource.org/licenses/
  * @version $Revision: 1
- * @link http://amartinezdev.com/nenypos/api           
+ * @link http://amartinezdev.com/nenypos/api
  * */
 
-
-//Get validator marchedData 
+//Get validator marchedData
 const { matchedData } = require("express-validator");
 //Get the model instance
 const { userModel } = require("../models");
 //Get the errors
 const { handleHttpError } = require("../utils/handleError");
 //Get libs for encrypt data
-const {compare, encrypt} = require("../utils/handlePassword");
+const { compare, encrypt } = require("../utils/handlePassword");
 //Get functions for token
-const  {singToken} = require("../utils/handleJwt");
- 
-
+const { singToken } = require("../utils/handleJwt");
 
 /**
  * Login user
- * @param {*} req 
- * @param {*} res 
- * @returns 
+ * @param {*} req
+ * @param {*} res
+ * @returns
  */
-const loginUser = async (req, res) =>{
-    try {
+const loginUser = async (req, res) => {
+  try {
+    const body = matchedData(req);
+    const { email } = body;
 
-        const body = matchedData(req);
-        const {email} = body;
-         
-        const user = await userModel.findOne({ 
-            where: {email}
-        });
-         
-        if (!user) {
-          handleErrorResponse(res, "USER_NOT_EXISTS", 404);
-          return;
-        }
-        const checkPassword = await compare(body.password, user.password);
-        
-        if (!checkPassword) {
-          handleErrorResponse(res, "PASSWORD_INVALID", 402);
-          return;
-        }
-    
-        const tokenJwt = await singToken(user);
-        
-        const data = {
-          token: tokenJwt,
-          user: user,
-        };
-        
-        //data.set("password",undefined, {strict:false}); //Do not return password  
-        console.log(data);
-        res.send({ data });
+    const user = await userModel.findOne({
+      where: { email },
+    });
 
-    } catch (e) {
-        handleHttpError(res,e);
+    if (!user) {
+      handleErrorResponse(res, "USER_NOT_EXISTS", 404);
+      return;
     }
-}
+    const checkPassword = await compare(body.password, user.password);
+
+    if (!checkPassword) {
+      handleErrorResponse(res, "PASSWORD_INVALID", 402);
+      return;
+    }
+
+    const tokenJwt = await singToken(user);
+
+    const data = {
+      token: tokenJwt,
+      user: user,
+    };
+
+    //data.set("password",undefined, {strict:false}); //Do not return password
+    console.log(data);
+    res.send({ data });
+  } catch (e) {
+    handleHttpError(res, e);
+  }
+};
 
 /**
- * Get all users 
- * @param {*} req 
- * @param {*} res 
- */ 
+ * Get all users
+ * @param {*} req
+ * @param {*} res
+ */
 const getUsers = async (req, res) => {
-    try {
-        const data = await userModel.find({});
-        data.set('password',undefined, {strict:false}); //Do not return password
-        res.send({data});
-    } catch (e) {
-        handleHttpError(res,e);
-    }
+  try {
+    const data = await userModel.find({});
+    data.set("password", undefined, { strict: false }); //Do not return password
+    res.send({ data });
+  } catch (e) {
+    handleHttpError(res, e);
+  }
 };
 
 /**
  * Get an user details
- * @param {*} req 
- * @param {*} res 
+ * @param {*} req
+ * @param {*} res
  */
-const getUser = async (req, res) =>{
-    try {
-        req = matchedData(req);
-        const {id} = req;
-        console.log(id);
-        const data = await userModel.findOne({[propertiesKey.id]:id});
-        data.set("password", undefined,{strict:false}); //Do not return password
-        res.send({data});
-    } catch (e) {
-        handleHttpError(res,e);
-    } 
+const getUser = async (req, res) => {
+  try {
+    req = matchedData(req);
+    const { id } = req;
+    console.log(id);
+    const data = await userModel.findOne({ [propertiesKey.id]: id });
+    data.set("password", undefined, { strict: false }); //Do not return password
+    res.send({ data });
+  } catch (e) {
+    handleHttpError(res, e);
+  }
 };
 
 /**
  * Create a user
- * @param {*} req 
- * @param {*} res 
+ * @param {*} req
+ * @param {*} res
  */
-const createUser = async (req, res) =>{
-    try {
+const createUser = async (req, res) => {
+  try {
+    req = matchedData(req);
+    const password = await encrypt(req.password); //Encrypt password
+    const body = { ...req, password };
 
-        req = matchedData(req);
-        const password = await encrypt(req.password) //Encrypt password
-        const body = {...req,password}
-        
-        const dataUser = await userModel.create(body); //Create user
-       
-        dataUser.set("password", undefined,{strict:false}); //Do not return password
-        const data = {
-            token: await singToken(dataUser),
-            user: dataUser
-        }
-        res.send({data}); //Return data
-    } catch (e) {
-        handleHttpError(res,e);
-    }   
+    const dataUser = await userModel.create(body); //Create user
+
+    dataUser.set("password", undefined, { strict: false }); //Do not return password
+    const data = {
+      token: await singToken(dataUser),
+      user: dataUser,
+    };
+    res.send({ data }); //Return data
+  } catch (e) {
+    handleHttpError(res, e);
+  }
 };
 
 /**
  * Update an user
- * @param {*} req 
- * @param {*} res 
+ * @param {*} req
+ * @param {*} res
  */
-const updateUser = async(req, res) =>{
-    try {
-        
-        /**
-         * Get:
-         * {
-         * id: id of user to update
-         * }
-         * 
-         * {
-         * body: details of user to update
-         * }
-         */
-        const {id, ...body} = matchedData(req);
-        const data = await userModel.findOneAndUpdate(
-            id,body
-        );
-        res.send({data});
-    } catch (e) {
-        handleHttpError(res,e);
-    }   
+const updateUser = async (req, res) => {
+  try {
+    /**
+     * Get:
+     * {
+     * id: id of user to update
+     * }
+     *
+     * {
+     * body: details of user to update
+     * }
+     */
+    const { id, ...body } = matchedData(req);
+    const data = await userModel.findOneAndUpdate(id, body);
+    res.send({ data });
+  } catch (e) {
+    handleHttpError(res, e);
+  }
 };
 
 /**
  * Delete an user
- * @param {*} req 
- * @param {*} res 
+ * @param {*} req
+ * @param {*} res
  */
-const deleteUser = async(req, res) =>{
-    try {
-        req = matchedData(req);
-        const {id} = req;
-        const data = await userModel.deleteOne({where:id});
-        res.send({data});
-    } catch (e) {
-        handleHttpError(res,e);
-    } 
+const deleteUser = async (req, res) => {
+  try {
+    req = matchedData(req);
+    const { id } = req;
+    const data = await userModel.deleteOne({ where: id });
+    res.send({ data });
+  } catch (e) {
+    handleHttpError(res, e);
+  }
 };
 
-module.exports = {getUsers,getUser,createUser,updateUser,deleteUser,loginUser};
+module.exports = {
+  getUsers,
+  getUser,
+  createUser,
+  updateUser,
+  deleteUser,
+  loginUser,
+};

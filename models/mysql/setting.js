@@ -1,54 +1,53 @@
 const { sequelize } = require("../../config/mysql");
 const { DataTypes } = require("sequelize");
 
-const Setting =  sequelize.define(
-    "settings",
-    {
-        name:{
-            type:DataTypes.CHAR(50),
-            allowNull:false,
-        },
-        phone:{
-            type:DataTypes.CHAR(50),
-            allowNull:false,
-        },
-        email:{
-            type:DataTypes.CHAR(50),
-            allowNull:false,
-        },
-        address:{
-            type:DataTypes.CHAR(50),
-            allowNull:false,
-        },
-        city:{
-            type:DataTypes.CHAR(50),
-            allowNull:false,
-        },
-        identity:{
-            type:DataTypes.CHAR(50),
-            allowNull:false,
-        },
-        logo:{
-            type:DataTypes.BLOB,
-            allowNull:false,
-        },
-        note_sales:{
-            type:DataTypes.STRING(500),
-            allowNull:false,
-        },
-        note_receipts:{
-            type:DataTypes.STRING(500),
-            allowNull:false,
-        },
-        footer:{
-            type:DataTypes.STRING(500),
-            allowNull:false,
-        },
-
+const Setting = sequelize.define(
+  "settings",
+  {
+    name: {
+      type: DataTypes.CHAR(50),
+      allowNull: false,
     },
-    {
-        timestamps: true,
-    }
+    phone: {
+      type: DataTypes.CHAR(50),
+      allowNull: false,
+    },
+    email: {
+      type: DataTypes.CHAR(50),
+      allowNull: false,
+    },
+    address: {
+      type: DataTypes.CHAR(50),
+      allowNull: false,
+    },
+    city: {
+      type: DataTypes.CHAR(50),
+      allowNull: false,
+    },
+    identity: {
+      type: DataTypes.CHAR(50),
+      allowNull: false,
+    },
+    logo: {
+      type: DataTypes.BLOB,
+      allowNull: false,
+    },
+    note_sales: {
+      type: DataTypes.STRING(500),
+      allowNull: false,
+    },
+    note_receipts: {
+      type: DataTypes.STRING(500),
+      allowNull: false,
+    },
+    footer: {
+      type: DataTypes.STRING(500),
+      allowNull: false,
+    },
+  },
+  {
+    timestamps: true,
+  }
 );
 module.exports = Setting;
 
@@ -64,4 +63,3 @@ module.exports = Setting;
 //     `note_receipts` VARCHAR(500) NOT NULL,
 //     `footer` VARCHAR(500) NOT NULL,
 // PRIMARY KEY (`id`));
-  

@@ -1,34 +1,34 @@
-/** 
+/**
  * =================================================================
  * Validating ProductsModel
  * =================================================================
- * @author AMartínezDev, I.E.R.L 
- * @copyright Copyright (c) 2021-2030   
- * @name NenyPos_Madera   
+ * @author AMartínezDev, I.E.R.L
+ * @copyright Copyright (c) 2021-2030
+ * @name NenyPos_Madera
  * @version 1.0
- * @link http://amartinezdev.com/nenypos/api     
+ * @link http://amartinezdev.com/nenypos/api
  * */
 
 const { check } = require("express-validator");
 
 //Handle Validator errors
-const validateResults = require("../utils/handleValidator")
+const validateResults = require("../utils/handleValidator");
 
 //Validate when are creating
-const validatorCreateProductCategory =[
-    check("name").exists().notEmpty(),
-     
-    (req, res, next) =>{
-        return validateResults(req, res, next);
-    }
+const validatorCreateProductCategory = [
+  check("name").exists().notEmpty(),
+
+  (req, res, next) => {
+    return validateResults(req, res, next);
+  },
 ];
 
 //Validate when get, delete and update product id exists
-const validatorIdProductCategory =[
-    check("id").exists().notEmpty().isNumeric(),
-    (req, res, next) =>{
-        return validateResults(req, res, next);
-    }
+const validatorIdProductCategory = [
+  check("id").exists().notEmpty().isNumeric(),
+  (req, res, next) => {
+    return validateResults(req, res, next);
+  },
 ];
 
-module.exports = { validatorCreateProductCategory , validatorIdProductCategory};
+module.exports = { validatorCreateProductCategory, validatorIdProductCategory };

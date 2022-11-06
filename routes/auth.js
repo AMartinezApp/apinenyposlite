@@ -1,40 +1,33 @@
-/** 
+/**
  * =================================================================
  * ROUTE FILE FOR AUTH USERS_MODEL
  * =================================================================
- * @author AMartínezDev, I.E.R.L 
- * @copyright Copyright (c) 2021-2030   
+ * @author AMartínezDev, I.E.R.L
+ * @copyright Copyright (c) 2021-2030
  * @license http://opensource.org/licenses/
  * @version $Revision: 1
- * @link http://amartinezdev.com/nenypos/api           
+ * @link http://amartinezdev.com/nenypos/api
  * */
 
- const express = require('express');
- const router = express.Router();
- 
- //Gets controllers functions
- const { getUsers, getUser, createUser, updateUser, deleteUser, loginUser } = require("../controllers/auth");
- 
- //Gets validation functions
- const { validatorCreateUser, validatorIdUser , validatorLogin} = require("../validators/auth");
- 
+const express = require("express");
+const router = express.Router();
 
- //Get user list 
- //router.get('/', getUsers);
- 
- //Get user details
- //router.get('/:id', validatorIdUser ,getUser);
- 
- //Create user
- router.post('/register', validatorCreateUser ,createUser);
+//Gets controllers functions
+const {
+  createUser,
+  loginUser,
+} = require("../controllers/auth");
 
- //Login user
- router.post('/login', validatorLogin ,loginUser);
+//Gets validation functions
+const {
+  validatorCreateUser,
+  validatorLogin,
+} = require("../validators/auth");
 
- //Update user
- //router.put('/:id', validatorIdItem, validatorCreate, updateUser);
+//Create user
+router.post("/register", validatorCreateUser, createUser);
 
- //Delete user
- //router.delete('/:id', validatorIdItem,deleteUser);
- 
- module.exports = router
+//Login user
+router.post("/login", validatorLogin, loginUser);
+
+module.exports = router;
