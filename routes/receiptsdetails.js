@@ -1,6 +1,6 @@
 /**
  * =================================================================
- * ROUTE FILE FOR PRODUCT MODEL
+ * ROUTE FILE FOR INVOICES MODEL
  * =================================================================
  * @author AMartínezDev, I.E.R.L
  * @copyright Copyright (c) 2021-2030
@@ -14,62 +14,59 @@ const router = express.Router();
 
 //Gets controllers functions
 const {
-  getProducts,
-  getProduct,
-  createProduct,
-  updateProduct,
-  deleteProduct,
-} = require("../controllers/product");
+  getReceiptDetails,
+  getReceiptDetail,
+  createReceiptDetail,
+  updateReceiptDetail,
+  deleteReceiptDetail,
+} = require("../controllers/receiptdetail");
 
 //Gets validation functions
 const {
-  validatorCreateProduct,
-  validatorIdProduct,
-} = require("../validators/product");
+  validatorCreateReceiptDetail,
+  validatorIdReceiptDetail,
+} = require("../validators/receiptdetail");
 
 //Get Middleware functions for checkAuth
 const checkAuth = require("../middleware/session");
 //Get Middleware functions for check idRol permission
 const authIdRol = require("../middleware/roleAuth");
 
-//Get products list
-router.get("/", checkAuth, authIdRol([1, 2, 3]), checkAuth, getProducts);
+//Get purchase list
+router.get("/", checkAuth, authIdRol([1, 2, 3]), getReceiptDetails);
 
-//Get product details
+//Get ReceiptDetail details
 router.get(
   "/:id",
   checkAuth,
   authIdRol([1, 2, 3]),
-  validatorIdProduct,
-  getProduct
+  validatorIdReceiptDetail,
+  getReceiptDetail
 );
-
-//Create product
+//Create ReceiptDetail
 router.post(
   "/",
   checkAuth,
   authIdRol([1, 2]),
-  validatorCreateProduct,
-  createProduct
+  validatorCreateReceiptDetail,
+  createReceiptDetail
 );
-
-//Update product
+//Update ReceiptDetail
 router.put(
   "/:id",
   checkAuth,
   authIdRol([1, 2]),
-  validatorIdProduct,
-  validatorCreateProduct,
-  updateProduct
+  validatorIdReceiptDetail,
+  validatorCreateReceiptDetail,
+  updateReceiptDetail
 );
-
-//Delete product
+//Delete ReceiptDetail
 router.delete(
   "/:id",
   checkAuth,
   authIdRol([1]),
-  validatorIdProduct,
-  deleteProduct
+  validatorIdReceiptDetail,
+  deleteReceiptDetail
 );
 
 module.exports = router;

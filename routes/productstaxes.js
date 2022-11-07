@@ -1,6 +1,6 @@
 /**
  * =================================================================
- * ROUTE FILE FOR PRODUCT MODEL
+ * ROUTE FILE FOR PRODUCTS STORES MODEL
  * =================================================================
  * @author AMartínezDev, I.E.R.L
  * @copyright Copyright (c) 2021-2030
@@ -14,62 +14,59 @@ const router = express.Router();
 
 //Gets controllers functions
 const {
-  getProducts,
-  getProduct,
-  createProduct,
-  updateProduct,
-  deleteProduct,
-} = require("../controllers/product");
+  getProductTaxs,
+  getProductTax,
+  createProductTax,
+  updateProductTax,
+  deleteProductTax,
+} = require("../controllers/producttax");
 
 //Gets validation functions
 const {
-  validatorCreateProduct,
-  validatorIdProduct,
-} = require("../validators/product");
+  validatorCreateProductTax,
+  validatorIdProductTax,
+} = require("../validators/producttax");
 
 //Get Middleware functions for checkAuth
 const checkAuth = require("../middleware/session");
 //Get Middleware functions for check idRol permission
 const authIdRol = require("../middleware/roleAuth");
 
-//Get products list
-router.get("/", checkAuth, authIdRol([1, 2, 3]), checkAuth, getProducts);
+//Get items list
+router.get("/", checkAuth, authIdRol([1, 2, 3]), getProductTaxs);
 
-//Get product details
+//Get item details
 router.get(
   "/:id",
   checkAuth,
   authIdRol([1, 2, 3]),
-  validatorIdProduct,
-  getProduct
+  validatorIdProductTax,
+  getProductTax
 );
-
-//Create product
+//Create item
 router.post(
   "/",
   checkAuth,
   authIdRol([1, 2]),
-  validatorCreateProduct,
-  createProduct
+  validatorCreateProductTax,
+  createProductTax
 );
-
-//Update product
+//Update item
 router.put(
   "/:id",
   checkAuth,
   authIdRol([1, 2]),
-  validatorIdProduct,
-  validatorCreateProduct,
-  updateProduct
+  validatorIdProductTax,
+  validatorCreateProductTax,
+  updateProductTax
 );
-
-//Delete product
+//Delete item
 router.delete(
   "/:id",
   checkAuth,
   authIdRol([1]),
-  validatorIdProduct,
-  deleteProduct
+  validatorIdProductTax,
+  deleteProductTax
 );
 
 module.exports = router;

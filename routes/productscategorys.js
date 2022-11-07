@@ -22,22 +22,22 @@ const { getProductCategorys,
 //Gets validation functions
 const { validatorCreateProductCategory, validatorIdProductCategory } = require("../validators/productcategory");
 
-//Gets Middleware functions
-/**
- * Tenemos pendiendente aplicar este middleware
- */
-const { checkAuth } = require("../middleware/session");
+//Get Middleware functions for checkAuth
+const checkAuth  = require("../middleware/session");
+//Get Middleware functions for check idRol permission 
+const authIdRol = require("../middleware/roleAuth"); 
+
 
 //Get items list 
-router.get('/', getProductCategorys);
+router.get('/', checkAuth, authIdRol([1,2,3]),getProductCategorys);
 
 //Get item details
-router.get('/:id', validatorIdProductCategory ,getProductCategory);
+router.get('/:id', checkAuth, authIdRol([1,2,3]),validatorIdProductCategory ,getProductCategory);
 //Create item
-router.post('/', validatorCreateProductCategory ,createProductCategory);
+router.post('/', checkAuth, authIdRol([1,2,3]), validatorCreateProductCategory ,createProductCategory);
 //Update item
-router.put('/:id', validatorIdProductCategory, validatorCreateProductCategory, updateProductCategory);
+router.put('/:id', checkAuth, authIdRol([1,2]),validatorIdProductCategory, validatorCreateProductCategory, updateProductCategory);
 //Delete item
-router.delete('/:id', validatorIdProductCategory,deleteProductCategory);
+router.delete('/:id', checkAuth, authIdRol([1]),validatorIdProductCategory,deleteProductCategory);
 
 module.exports = router;

@@ -1,6 +1,6 @@
 /**
  * =================================================================
- * ROUTE FILE FOR PRODUCT MODEL
+ * ROUTE FILE FOR CUSTOMER MODEL
  * =================================================================
  * @author AMartínezDev, I.E.R.L
  * @copyright Copyright (c) 2021-2030
@@ -14,62 +14,59 @@ const router = express.Router();
 
 //Gets controllers functions
 const {
-  getProducts,
-  getProduct,
-  createProduct,
-  updateProduct,
-  deleteProduct,
-} = require("../controllers/product");
+  getCustomers,
+  getCustomer,
+  createCustomer,
+  updateCustomer,
+  deleteCustomer,
+} = require("../controllers/customer");
 
 //Gets validation functions
 const {
-  validatorCreateProduct,
-  validatorIdProduct,
-} = require("../validators/product");
+  validatorCreateCustomer,
+  validatorIdCustomer,
+} = require("../validators/customer");
 
 //Get Middleware functions for checkAuth
 const checkAuth = require("../middleware/session");
 //Get Middleware functions for check idRol permission
 const authIdRol = require("../middleware/roleAuth");
 
-//Get products list
-router.get("/", checkAuth, authIdRol([1, 2, 3]), checkAuth, getProducts);
+//Get purchase list
+router.get("/", checkAuth, authIdRol([1, 2, 3]), getCustomers);
 
-//Get product details
+//Get Customer details
 router.get(
   "/:id",
   checkAuth,
   authIdRol([1, 2, 3]),
-  validatorIdProduct,
-  getProduct
+  validatorIdCustomer,
+  getCustomer
 );
-
-//Create product
+//Create Customer
 router.post(
   "/",
   checkAuth,
   authIdRol([1, 2]),
-  validatorCreateProduct,
-  createProduct
+  validatorCreateCustomer,
+  createCustomer
 );
-
-//Update product
+//Update Customer
 router.put(
   "/:id",
   checkAuth,
   authIdRol([1, 2]),
-  validatorIdProduct,
-  validatorCreateProduct,
-  updateProduct
+  validatorIdCustomer,
+  validatorCreateCustomer,
+  updateCustomer
 );
-
-//Delete product
+//Delete Customer
 router.delete(
   "/:id",
   checkAuth,
   authIdRol([1]),
-  validatorIdProduct,
-  deleteProduct
+  validatorIdCustomer,
+  deleteCustomer
 );
 
 module.exports = router;

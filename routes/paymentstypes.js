@@ -1,6 +1,6 @@
 /**
  * =================================================================
- * ROUTE FILE FOR PRODUCT MODEL
+ * ROUTE FILE FOR PAYMENT TYPE
  * =================================================================
  * @author AMartínezDev, I.E.R.L
  * @copyright Copyright (c) 2021-2030
@@ -14,62 +14,59 @@ const router = express.Router();
 
 //Gets controllers functions
 const {
-  getProducts,
-  getProduct,
-  createProduct,
-  updateProduct,
-  deleteProduct,
-} = require("../controllers/product");
+  getPaymentTypes,
+  getPaymentType,
+  createPaymentType,
+  updatePaymentType,
+  deletePaymentType,
+} = require("../controllers/paymenttype");
 
 //Gets validation functions
 const {
-  validatorCreateProduct,
-  validatorIdProduct,
-} = require("../validators/product");
+  validatorCreatePaymentType,
+  validatorIdPaymentType,
+} = require("../validators/paymenttype");
 
 //Get Middleware functions for checkAuth
 const checkAuth = require("../middleware/session");
 //Get Middleware functions for check idRol permission
 const authIdRol = require("../middleware/roleAuth");
 
-//Get products list
-router.get("/", checkAuth, authIdRol([1, 2, 3]), checkAuth, getProducts);
+//Get purchase list
+router.get("/", checkAuth, authIdRol([1, 2, 3]), getPaymentTypes);
 
-//Get product details
+//Get PaymentType details
 router.get(
   "/:id",
   checkAuth,
   authIdRol([1, 2, 3]),
-  validatorIdProduct,
-  getProduct
+  validatorIdPaymentType,
+  getPaymentType
 );
-
-//Create product
+//Create PaymentType
 router.post(
   "/",
   checkAuth,
   authIdRol([1, 2]),
-  validatorCreateProduct,
-  createProduct
+  validatorCreatePaymentType,
+  createPaymentType
 );
-
-//Update product
+//Update PaymentType
 router.put(
   "/:id",
   checkAuth,
   authIdRol([1, 2]),
-  validatorIdProduct,
-  validatorCreateProduct,
-  updateProduct
+  validatorIdPaymentType,
+  validatorCreatePaymentType,
+  updatePaymentType
 );
-
-//Delete product
+//Delete PaymentType
 router.delete(
   "/:id",
   checkAuth,
   authIdRol([1]),
-  validatorIdProduct,
-  deleteProduct
+  validatorIdPaymentType,
+  deletePaymentType
 );
 
 module.exports = router;

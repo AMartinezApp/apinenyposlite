@@ -1,6 +1,6 @@
 /**
  * =================================================================
- * ROUTE FILE FOR PRODUCT MODEL
+ * ROUTE FILE FOR INVOICES DETAILS MODEL
  * =================================================================
  * @author AMartínezDev, I.E.R.L
  * @copyright Copyright (c) 2021-2030
@@ -14,62 +14,59 @@ const router = express.Router();
 
 //Gets controllers functions
 const {
-  getProducts,
-  getProduct,
-  createProduct,
-  updateProduct,
-  deleteProduct,
-} = require("../controllers/product");
+  getInvoiceDetails,
+  getInvoiceDetail,
+  createInvoiceDetail,
+  updateInvoiceDetail,
+  deleteInvoiceDetail,
+} = require("../controllers/invoicedetail");
 
 //Gets validation functions
 const {
-  validatorCreateProduct,
-  validatorIdProduct,
-} = require("../validators/product");
+  validatorCreateInvoiceDetail,
+  validatorIdInvoiceDetail,
+} = require("../validators/invoicedetail");
 
 //Get Middleware functions for checkAuth
 const checkAuth = require("../middleware/session");
 //Get Middleware functions for check idRol permission
 const authIdRol = require("../middleware/roleAuth");
 
-//Get products list
-router.get("/", checkAuth, authIdRol([1, 2, 3]), checkAuth, getProducts);
+//Get purchase list
+router.get("/", checkAuth, authIdRol([1, 2, 3]), getInvoiceDetails);
 
-//Get product details
+//Get invoice detail details
 router.get(
   "/:id",
   checkAuth,
   authIdRol([1, 2, 3]),
-  validatorIdProduct,
-  getProduct
+  validatorIdInvoiceDetail,
+  getInvoiceDetail
 );
-
-//Create product
+//Create invoice detail
 router.post(
   "/",
   checkAuth,
   authIdRol([1, 2]),
-  validatorCreateProduct,
-  createProduct
+  validatorCreateInvoiceDetail,
+  createInvoiceDetail
 );
-
-//Update product
+//Update invoice detail
 router.put(
   "/:id",
   checkAuth,
   authIdRol([1, 2]),
-  validatorIdProduct,
-  validatorCreateProduct,
-  updateProduct
+  validatorIdInvoiceDetail,
+  validatorCreateInvoiceDetail,
+  updateInvoiceDetail
 );
-
-//Delete product
+//Delete invoice detail
 router.delete(
   "/:id",
   checkAuth,
   authIdRol([1]),
-  validatorIdProduct,
-  deleteProduct
+  validatorIdInvoiceDetail,
+  deleteInvoiceDetail
 );
 
 module.exports = router;

@@ -1,6 +1,6 @@
 /**
  * =================================================================
- * ROUTE FILE FOR PRODUCT MODEL
+ * ROUTE FILE FOR EXPENSE TYPE MODEL
  * =================================================================
  * @author AMartínezDev, I.E.R.L
  * @copyright Copyright (c) 2021-2030
@@ -14,62 +14,59 @@ const router = express.Router();
 
 //Gets controllers functions
 const {
-  getProducts,
-  getProduct,
-  createProduct,
-  updateProduct,
-  deleteProduct,
-} = require("../controllers/product");
+  getExpenseTypes,
+  getExpenseType,
+  createExpenseType,
+  updateExpenseType,
+  deleteExpenseType,
+} = require("../controllers/expensetype");
 
 //Gets validation functions
 const {
-  validatorCreateProduct,
-  validatorIdProduct,
-} = require("../validators/product");
+  validatorCreateExpenseType,
+  validatorIdExpenseType,
+} = require("../validators/expensetype");
 
 //Get Middleware functions for checkAuth
 const checkAuth = require("../middleware/session");
 //Get Middleware functions for check idRol permission
 const authIdRol = require("../middleware/roleAuth");
 
-//Get products list
-router.get("/", checkAuth, authIdRol([1, 2, 3]), checkAuth, getProducts);
+//Get ExpenseType list
+router.get("/", checkAuth, authIdRol([1, 2, 3]), getExpenseTypes);
 
-//Get product details
+//Get ExpenseType details
 router.get(
   "/:id",
   checkAuth,
   authIdRol([1, 2, 3]),
-  validatorIdProduct,
-  getProduct
+  validatorIdExpenseType,
+  getExpenseType
 );
-
-//Create product
+//Create ExpenseType
 router.post(
   "/",
   checkAuth,
   authIdRol([1, 2]),
-  validatorCreateProduct,
-  createProduct
+  validatorCreateExpenseType,
+  createExpenseType
 );
-
-//Update product
+//Update ExpenseType
 router.put(
   "/:id",
   checkAuth,
   authIdRol([1, 2]),
-  validatorIdProduct,
-  validatorCreateProduct,
-  updateProduct
+  validatorIdExpenseType,
+  validatorCreateExpenseType,
+  updateExpenseType
 );
-
-//Delete product
+//Delete ExpenseType
 router.delete(
   "/:id",
   checkAuth,
   authIdRol([1]),
-  validatorIdProduct,
-  deleteProduct
+  validatorIdExpenseType,
+  deleteExpenseType
 );
 
 module.exports = router;

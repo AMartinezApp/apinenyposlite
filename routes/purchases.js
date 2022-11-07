@@ -1,6 +1,6 @@
 /**
  * =================================================================
- * ROUTE FILE FOR PRODUCT MODEL
+ * ROUTE FILE FOR USER ROL MODEL
  * =================================================================
  * @author AMartínezDev, I.E.R.L
  * @copyright Copyright (c) 2021-2030
@@ -14,62 +14,60 @@ const router = express.Router();
 
 //Gets controllers functions
 const {
-  getProducts,
-  getProduct,
-  createProduct,
-  updateProduct,
-  deleteProduct,
-} = require("../controllers/product");
+  getPurchases,
+  getPurchase,
+  createPurchase,
+  updatePurchase,
+  deletePurchase,
+} = require("../controllers/purchase");
 
 //Gets validation functions
 const {
-  validatorCreateProduct,
-  validatorIdProduct,
-} = require("../validators/product");
+  validatorCreatePurchase,
+  validatorIdPurchase,
+} = require("../validators/purchase");
 
 //Get Middleware functions for checkAuth
 const checkAuth = require("../middleware/session");
 //Get Middleware functions for check idRol permission
 const authIdRol = require("../middleware/roleAuth");
 
-//Get products list
-router.get("/", checkAuth, authIdRol([1, 2, 3]), checkAuth, getProducts);
+//Get purchase list
+router.get("/", checkAuth, authIdRol([1, 2, 3]), getPurchases);
 
-//Get product details
+
+//Get purchase details
 router.get(
   "/:id",
   checkAuth,
-  authIdRol([1, 2, 3]),
-  validatorIdProduct,
-  getProduct
+  authIdRol([1, 2, 3]), 
+  validatorIdPurchase,
+  getPurchase
 );
-
-//Create product
+//Create purchase
 router.post(
   "/",
   checkAuth,
   authIdRol([1, 2]),
-  validatorCreateProduct,
-  createProduct
+  validatorCreatePurchase,
+  createPurchase
 );
-
-//Update product
+//Update purchase
 router.put(
   "/:id",
   checkAuth,
   authIdRol([1, 2]),
-  validatorIdProduct,
-  validatorCreateProduct,
-  updateProduct
+  validatorIdPurchase,
+  validatorCreatePurchase,
+  updatePurchase
 );
-
-//Delete product
+//Delete purchase
 router.delete(
   "/:id",
   checkAuth,
   authIdRol([1]),
-  validatorIdProduct,
-  deleteProduct
+  validatorIdPurchase,
+  deletePurchase
 );
 
 module.exports = router;

@@ -1,6 +1,6 @@
 /**
  * =================================================================
- * ROUTE FILE FOR PRODUCT MODEL
+ * ROUTE FILE FOR USER ROL MODEL
  * =================================================================
  * @author AMartínezDev, I.E.R.L
  * @copyright Copyright (c) 2021-2030
@@ -14,62 +14,60 @@ const router = express.Router();
 
 //Gets controllers functions
 const {
-  getProducts,
-  getProduct,
-  createProduct,
-  updateProduct,
-  deleteProduct,
-} = require("../controllers/product");
+  getSettings,
+  getSetting,
+  createSetting,
+  updateSetting,
+  deleteSetting,
+} = require("../controllers/setting");
 
 //Gets validation functions
 const {
-  validatorCreateProduct,
-  validatorIdProduct,
-} = require("../validators/product");
+  validatorCreateSetting,
+  validatorIdSetting,
+} = require("../validators/setting");
 
 //Get Middleware functions for checkAuth
 const checkAuth = require("../middleware/session");
 //Get Middleware functions for check idRol permission
 const authIdRol = require("../middleware/roleAuth");
 
-//Get products list
-router.get("/", checkAuth, authIdRol([1, 2, 3]), checkAuth, getProducts);
+//Get setting list
+router.get("/", checkAuth, authIdRol([1, 2, 3]), getSettings);
 
-//Get product details
+
+//Get setting details
 router.get(
   "/:id",
   checkAuth,
-  authIdRol([1, 2, 3]),
-  validatorIdProduct,
-  getProduct
+  authIdRol([1, 2, 3]), 
+  validatorIdSetting,
+  getSetting
 );
-
-//Create product
+//Create setting
 router.post(
   "/",
   checkAuth,
   authIdRol([1, 2]),
-  validatorCreateProduct,
-  createProduct
+  validatorCreateSetting,
+  createSetting
 );
-
-//Update product
+//Update setting
 router.put(
   "/:id",
   checkAuth,
   authIdRol([1, 2]),
-  validatorIdProduct,
-  validatorCreateProduct,
-  updateProduct
+  validatorIdSetting,
+  validatorCreateSetting,
+  updateSetting
 );
-
-//Delete product
+//Delete setting
 router.delete(
   "/:id",
   checkAuth,
   authIdRol([1]),
-  validatorIdProduct,
-  deleteProduct
+  validatorIdSetting,
+  deleteSetting
 );
 
 module.exports = router;

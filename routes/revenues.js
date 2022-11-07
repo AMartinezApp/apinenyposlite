@@ -1,6 +1,6 @@
 /**
  * =================================================================
- * ROUTE FILE FOR PRODUCT MODEL
+ * ROUTE FILE FOR REVENUE MODEL
  * =================================================================
  * @author AMartínezDev, I.E.R.L
  * @copyright Copyright (c) 2021-2030
@@ -14,62 +14,59 @@ const router = express.Router();
 
 //Gets controllers functions
 const {
-  getProducts,
-  getProduct,
-  createProduct,
-  updateProduct,
-  deleteProduct,
-} = require("../controllers/product");
+  getRevenues,
+  getRevenue,
+  createRevenue,
+  updateRevenue,
+  deleteRevenue,
+} = require("../controllers/revenue");
 
 //Gets validation functions
 const {
-  validatorCreateProduct,
-  validatorIdProduct,
-} = require("../validators/product");
+  validatorCreateRevenue,
+  validatorIdRevenue,
+} = require("../validators/revenue");
 
 //Get Middleware functions for checkAuth
 const checkAuth = require("../middleware/session");
 //Get Middleware functions for check idRol permission
 const authIdRol = require("../middleware/roleAuth");
 
-//Get products list
-router.get("/", checkAuth, authIdRol([1, 2, 3]), checkAuth, getProducts);
+//Get Revenue list
+router.get("/", checkAuth, authIdRol([1, 2, 3]), getRevenues);
 
-//Get product details
+//Get Revenue details
 router.get(
   "/:id",
   checkAuth,
   authIdRol([1, 2, 3]),
-  validatorIdProduct,
-  getProduct
+  validatorIdRevenue,
+  getRevenue
 );
-
-//Create product
+//Create Revenue
 router.post(
   "/",
   checkAuth,
   authIdRol([1, 2]),
-  validatorCreateProduct,
-  createProduct
+  validatorCreateRevenue,
+  createRevenue
 );
-
-//Update product
+//Update Revenue
 router.put(
   "/:id",
   checkAuth,
   authIdRol([1, 2]),
-  validatorIdProduct,
-  validatorCreateProduct,
-  updateProduct
+  validatorIdRevenue,
+  validatorCreateRevenue,
+  updateRevenue
 );
-
-//Delete product
+//Delete Revenue
 router.delete(
   "/:id",
   checkAuth,
   authIdRol([1]),
-  validatorIdProduct,
-  deleteProduct
+  validatorIdRevenue,
+  deleteRevenue
 );
 
 module.exports = router;

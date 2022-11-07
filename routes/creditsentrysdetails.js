@@ -1,6 +1,6 @@
 /**
  * =================================================================
- * ROUTE FILE FOR PRODUCT MODEL
+ * ROUTE FILE FOR CREDIT ENTRY DETAIL MODEL
  * =================================================================
  * @author AMartínezDev, I.E.R.L
  * @copyright Copyright (c) 2021-2030
@@ -14,62 +14,59 @@ const router = express.Router();
 
 //Gets controllers functions
 const {
-  getProducts,
-  getProduct,
-  createProduct,
-  updateProduct,
-  deleteProduct,
-} = require("../controllers/product");
+  getCreditEntryDetails,
+  getCreditEntryDetail,
+  createCreditEntryDetail,
+  updateCreditEntryDetail,
+  deleteCreditEntryDetail,
+} = require("../controllers/creditentrydetail");
 
 //Gets validation functions
 const {
-  validatorCreateProduct,
-  validatorIdProduct,
-} = require("../validators/product");
+  validatorCreateCreditEntryDetail,
+  validatorIdCreditEntryDetail,
+} = require("../validators/creditentrydetail");
 
 //Get Middleware functions for checkAuth
 const checkAuth = require("../middleware/session");
 //Get Middleware functions for check idRol permission
 const authIdRol = require("../middleware/roleAuth");
 
-//Get products list
-router.get("/", checkAuth, authIdRol([1, 2, 3]), checkAuth, getProducts);
+//Get CreditEntryDetail list
+router.get("/", checkAuth, authIdRol([1, 2, 3]), getCreditEntryDetails);
 
-//Get product details
+//Get CreditEntryDetail details
 router.get(
   "/:id",
   checkAuth,
   authIdRol([1, 2, 3]),
-  validatorIdProduct,
-  getProduct
+  validatorIdCreditEntryDetail,
+  getCreditEntryDetail
 );
-
-//Create product
+//Create CreditEntryDetail
 router.post(
   "/",
   checkAuth,
   authIdRol([1, 2]),
-  validatorCreateProduct,
-  createProduct
+  validatorCreateCreditEntryDetail,
+  createCreditEntryDetail
 );
-
-//Update product
+//Update CreditEntryDetail
 router.put(
   "/:id",
   checkAuth,
   authIdRol([1, 2]),
-  validatorIdProduct,
-  validatorCreateProduct,
-  updateProduct
+  validatorIdCreditEntryDetail,
+  validatorCreateCreditEntryDetail,
+  updateCreditEntryDetail
 );
-
-//Delete product
+//Delete CreditEntryDetail
 router.delete(
   "/:id",
   checkAuth,
   authIdRol([1]),
-  validatorIdProduct,
-  deleteProduct
+  validatorIdCreditEntryDetail,
+  deleteCreditEntryDetail
 );
 
 module.exports = router;

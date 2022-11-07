@@ -1,6 +1,6 @@
 /**
  * =================================================================
- * ROUTE FILE FOR PRODUCT MODEL
+ * ROUTE FILE FOR SUPPLIER MODEL
  * =================================================================
  * @author AMartínezDev, I.E.R.L
  * @copyright Copyright (c) 2021-2030
@@ -14,62 +14,59 @@ const router = express.Router();
 
 //Gets controllers functions
 const {
-  getProducts,
-  getProduct,
-  createProduct,
-  updateProduct,
-  deleteProduct,
-} = require("../controllers/product");
+  getSuppliers,
+  getSupplier,
+  createSupplier,
+  updateSupplier,
+  deleteSupplier,
+} = require("../controllers/supplier");
 
 //Gets validation functions
 const {
-  validatorCreateProduct,
-  validatorIdProduct,
-} = require("../validators/product");
+  validatorCreateSupplier,
+  validatorIdSupplier,
+} = require("../validators/supplier");
 
 //Get Middleware functions for checkAuth
 const checkAuth = require("../middleware/session");
 //Get Middleware functions for check idRol permission
 const authIdRol = require("../middleware/roleAuth");
 
-//Get products list
-router.get("/", checkAuth, authIdRol([1, 2, 3]), checkAuth, getProducts);
+//Get Supplier list
+router.get("/", checkAuth, authIdRol([1, 2, 3]), getSuppliers);
 
-//Get product details
+//Get Supplier details
 router.get(
   "/:id",
   checkAuth,
   authIdRol([1, 2, 3]),
-  validatorIdProduct,
-  getProduct
+  validatorIdSupplier,
+  getSupplier
 );
-
-//Create product
+//Create Supplier
 router.post(
   "/",
   checkAuth,
   authIdRol([1, 2]),
-  validatorCreateProduct,
-  createProduct
+  validatorCreateSupplier,
+  createSupplier
 );
-
-//Update product
+//Update Supplier
 router.put(
   "/:id",
   checkAuth,
   authIdRol([1, 2]),
-  validatorIdProduct,
-  validatorCreateProduct,
-  updateProduct
+  validatorIdSupplier,
+  validatorCreateSupplier,
+  updateSupplier
 );
-
-//Delete product
+//Delete Supplier
 router.delete(
   "/:id",
   checkAuth,
   authIdRol([1]),
-  validatorIdProduct,
-  deleteProduct
+  validatorIdSupplier,
+  deleteSupplier
 );
 
 module.exports = router;

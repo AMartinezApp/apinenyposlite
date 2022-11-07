@@ -30,7 +30,7 @@ const Setting = sequelize.define(
     },
     logo: {
       type: DataTypes.BLOB,
-      allowNull: false,
+      allowNull: true,
     },
     note_sales: {
       type: DataTypes.STRING(500),

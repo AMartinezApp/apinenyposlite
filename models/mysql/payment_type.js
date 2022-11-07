@@ -1,8 +1,8 @@
 const { sequelize } = require("../../config/mysql");
 const { DataTypes } = require("sequelize");
 
-const Product_Storage = sequelize.define(
-  "products_stores",
+const Payment_Type = sequelize.define(
+  "payments_types",
   {
     name: {
       type: DataTypes.CHAR(50),
@@ -19,9 +19,9 @@ const Product_Storage = sequelize.define(
   }
 );
 
-module.exports = Product_Storage;
+module.exports = Payment_Type;
 
-// CREATE TABLE `dbnenyposlite_v_1`.`products_stores` (
+// CREATE TABLE `dbnenyposlite_v_1`.`payments_types` (
 //    `id` INT NOT NULL AUTO_INCREMENT,
 //    `name` CHAR(50) NOT NULL,
 //    `status` ENUM('A', 'D') NOT NULL DEFAULT 'A' COMMENT 'A=active, D=deleted',

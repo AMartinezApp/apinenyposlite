@@ -1,6 +1,6 @@
 /**
  * =================================================================
- * ROUTE FILE FOR PRODUCT MODEL
+ * ROUTE FILE FOR USER ROL MODEL
  * =================================================================
  * @author AMartínezDev, I.E.R.L
  * @copyright Copyright (c) 2021-2030
@@ -12,64 +12,62 @@
 const express = require("express");
 const router = express.Router();
 
-//Gets controllers functions
+//Gets controllers functions 
 const {
-  getProducts,
-  getProduct,
-  createProduct,
-  updateProduct,
-  deleteProduct,
-} = require("../controllers/product");
+  getPurchaseDetails,
+  getPurchaseDetail,
+  createPurchaseDetail,
+  updatePurchaseDetail,
+  deletePurchaseDetail,
+} = require("../controllers/purchasedetail");
 
 //Gets validation functions
 const {
-  validatorCreateProduct,
-  validatorIdProduct,
-} = require("../validators/product");
+  validatorCreatePurchaseDetail,
+  validatorIdPurchaseDetail,
+} = require("../validators/purchasedetail");
 
 //Get Middleware functions for checkAuth
 const checkAuth = require("../middleware/session");
 //Get Middleware functions for check idRol permission
 const authIdRol = require("../middleware/roleAuth");
 
-//Get products list
-router.get("/", checkAuth, authIdRol([1, 2, 3]), checkAuth, getProducts);
+//Get purchase Details list
+router.get("/", checkAuth, authIdRol([1, 2, 3]), getPurchaseDetails);
 
-//Get product details
+
+//Get purchase Detail details
 router.get(
   "/:id",
   checkAuth,
-  authIdRol([1, 2, 3]),
-  validatorIdProduct,
-  getProduct
+  authIdRol([1, 2, 3]), 
+  validatorIdPurchaseDetail,
+  getPurchaseDetail
 );
-
-//Create product
+//Create purchase Detail
 router.post(
   "/",
   checkAuth,
   authIdRol([1, 2]),
-  validatorCreateProduct,
-  createProduct
+  validatorCreatePurchaseDetail,
+  createPurchaseDetail
 );
-
-//Update product
+//Update purchase Detail
 router.put(
   "/:id",
   checkAuth,
   authIdRol([1, 2]),
-  validatorIdProduct,
-  validatorCreateProduct,
-  updateProduct
+  validatorIdPurchaseDetail,
+  validatorCreatePurchaseDetail,
+  updatePurchaseDetail
 );
-
-//Delete product
+//Delete purchase Detail
 router.delete(
   "/:id",
   checkAuth,
   authIdRol([1]),
-  validatorIdProduct,
-  deleteProduct
+  validatorIdPurchaseDetail,
+  deletePurchaseDetail
 );
 
 module.exports = router;

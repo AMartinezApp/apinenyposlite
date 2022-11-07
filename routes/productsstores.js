@@ -1,6 +1,6 @@
 /**
  * =================================================================
- * ROUTE FILE FOR PRODUCT MODEL
+ * ROUTE FILE FOR PRODUCTS STORES MODEL
  * =================================================================
  * @author AMartínezDev, I.E.R.L
  * @copyright Copyright (c) 2021-2030
@@ -14,62 +14,59 @@ const router = express.Router();
 
 //Gets controllers functions
 const {
-  getProducts,
-  getProduct,
-  createProduct,
-  updateProduct,
-  deleteProduct,
-} = require("../controllers/product");
+  getProductStores,
+  getProductStore,
+  createProductStore,
+  updateProductStore,
+  deleteProductStore,
+} = require("../controllers/productstore");
 
 //Gets validation functions
 const {
-  validatorCreateProduct,
-  validatorIdProduct,
-} = require("../validators/product");
+  validatorCreateProductStore,
+  validatorIdProductStore,
+} = require("../validators/productstore");
 
 //Get Middleware functions for checkAuth
 const checkAuth = require("../middleware/session");
 //Get Middleware functions for check idRol permission
 const authIdRol = require("../middleware/roleAuth");
 
-//Get products list
-router.get("/", checkAuth, authIdRol([1, 2, 3]), checkAuth, getProducts);
+//Get stores list
+router.get("/", checkAuth, authIdRol([1, 2, 3]), getProductStores);
 
-//Get product details
+//Get store details
 router.get(
   "/:id",
   checkAuth,
   authIdRol([1, 2, 3]),
-  validatorIdProduct,
-  getProduct
+  validatorIdProductStore,
+  getProductStore
 );
-
-//Create product
+//Create store
 router.post(
   "/",
   checkAuth,
-  authIdRol([1, 2]),
-  validatorCreateProduct,
-  createProduct
+  authIdRol([1, 2, 3]),
+  validatorCreateProductStore,
+  createProductStore
 );
-
-//Update product
+//Update store
 router.put(
   "/:id",
   checkAuth,
   authIdRol([1, 2]),
-  validatorIdProduct,
-  validatorCreateProduct,
-  updateProduct
+  validatorIdProductStore,
+  validatorCreateProductStore,
+  updateProductStore
 );
-
-//Delete product
+//Delete store
 router.delete(
   "/:id",
   checkAuth,
   authIdRol([1]),
-  validatorIdProduct,
-  deleteProduct
+  validatorIdProductStore,
+  deleteProductStore
 );
 
 module.exports = router;
