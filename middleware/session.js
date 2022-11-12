@@ -20,14 +20,14 @@ const { userModel } = require("../models");
 const checkAuth = async (req, res, next) => {
   try {
     if (!req.headers.authorization) {
-      handleHttpError(res, "NEED_AUTHORIZATION", 409);
+      res.status(409).send('NEED_AUTHORIZATION');
       return;
     }
     const token = req.headers.authorization.split(" ").pop();
     const tokenData = await verifyToken(token);
 
     if (!tokenData) {
-      handleHttpError(res, "NEED_TOKEN", 409);
+      res.status(409).send('NEED_TOKEN');
       return;
     }
     const { id } = tokenData;

@@ -36,25 +36,26 @@ const loginUser = async (req, res) => {
     });
 
     if (!user) {
-      handleErrorResponse(res, "USER_NOT_EXISTS", 404);
+      res.status(401).send('CREDENTIALS_INVALID');
       return;
     }
     const checkPassword = await compare(body.password, user.password);
 
-    if (!checkPassword) {
-      handleErrorResponse(res, "PASSWORD_INVALID", 402);
+    if (!checkPassword) { 
+      res.status(401).send('CREDENTIALS_INVALID');
       return;
     }
 
     const tokenJwt = await singToken(user);
 
+    user.set("password", undefined, { strict: false }); //Do not return password
     const data = {
       token: tokenJwt,
       user: user,
     };
 
-    //data.set("password",undefined, {strict:false}); //Do not return password
-    console.log(data);
+    //
+     
     res.send({ data });
   } catch (e) {
     handleHttpError(res, e);
@@ -112,7 +113,10 @@ const createUser = async (req, res) => {
       token: await singToken(dataUser),
       user: dataUser,
     };
+    
+    
     res.send({ data }); //Return data
+
   } catch (e) {
     handleHttpError(res, e);
   }

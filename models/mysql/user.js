@@ -15,6 +15,7 @@ const User = sequelize.define(
     email: {
       type: DataTypes.CHAR(50),
       allowNull: false,
+      unique: true
     },
     password: {
       type: DataTypes.STRING(500),
@@ -47,4 +48,6 @@ module.exports = User;
 //     `idrole` INT NOT NULL,
 //     `createdby` INT NOT NULL,
 //     `status` ENUM('A', 'D') NOT NULL DEFAULT 'A' COMMENT 'A=active, D=deleted',
-// PRIMARY KEY (`id`));
+// PRIMARY KEY (`id`),
+// UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE);
+
