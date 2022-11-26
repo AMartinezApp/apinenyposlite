@@ -26,9 +26,9 @@ const getProducts = async (req, res) => {
   try {
     const data = await productModel.findAll({
       include: [
-        { model: productCategoryModel, attributes: ["name"] },
-        { model: productStorageModel, attributes: ["name"] },
-        { model: productTaxModel, attributes: ["name"] },
+        { model: productCategoryModel, attributes: ["id","name"] },
+        { model: productStorageModel, attributes: ["id","name"] },
+        { model: productTaxModel, attributes: ["id","name"] },
       ],
       attributes: [
         "id",
@@ -42,7 +42,10 @@ const getProducts = async (req, res) => {
       ],
     });
     const user = req.user;
-    res.send({ data, user });
+    res.status(200).send(
+      data
+    );
+     
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -72,8 +75,8 @@ const getProduct = async (req, res) => {
       ],
     });
     if (!data)
-      return res.status(404).json({ message: "document does not exists" });
-    res.send({ data });
+        return res.status(404).send({ result: 'Document not found',status: 'error'} );
+    res.send( data );
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -84,7 +87,9 @@ const createProduct = async (req, res) => {
   try {
     const body = matchedData(req);
     const data = await productModel.create(body);
-    res.send({ data });
+    res.status(201).send(
+      data
+    );
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -99,10 +104,12 @@ const updateProduct = async (req, res) => {
       where: { id },
     });
     if (!data)
-      return res.status(404).json({ message: "document does not exists" });
+        return res.status(404).send({ result: 'Document not found',status: 'error'} );
     data.set(body);
     data.save();
-    res.send({ data });
+    res.status(201).send(
+      data
+    );
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -119,8 +126,8 @@ const deleteProduct = async (req, res) => {
       },
     });
     if (!data)
-      return res.status(404).json({ message: "document does not exists" });
-    res.send({ data });
+        return res.status(404).send({ result: 'Document not found',status: 'error'} );
+    res.status(201).send(data);
   } catch (e) {
     handleHttpError(res, e);
   }

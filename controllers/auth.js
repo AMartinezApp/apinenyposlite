@@ -36,13 +36,20 @@ const loginUser = async (req, res) => {
     });
 
     if (!user) {
-      res.status(401).send('CREDENTIALS_INVALID');
+      res.status(401).send({ 
+        result: 'CREDENTIALS_INVALID',
+        status: 'error'
+      } );
       return;
     }
     const checkPassword = await compare(body.password, user.password);
 
     if (!checkPassword) { 
-      res.status(401).send('CREDENTIALS_INVALID');
+       
+      res.status(401).send({ 
+        result: 'CREDENTIALS_INVALID',
+        status: 'error'
+      } );
       return;
     }
 
@@ -56,7 +63,7 @@ const loginUser = async (req, res) => {
 
     //
      
-    res.send({ data });
+    res.send(data );
   } catch (e) {
     handleHttpError(res, e);
   }

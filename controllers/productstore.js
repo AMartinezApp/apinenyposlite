@@ -16,11 +16,14 @@ const { productStorageModel } = require("../models");
 //Get the errors helper
 const { handleHttpError } = require("../utils/handleError");
 
-// Get List of products stores 
+// Get List of products stores
 const getProductStores = async (req, res) => {
   try {
     const data = await productStorageModel.findAll();
-    res.send({ data });
+    res.status(200).send({
+      result: data,
+      status: "ok",
+    });
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -35,8 +38,14 @@ const getProductStore = async (req, res) => {
       where: { id },
     });
     if (!data)
-      return res.status(404).json({ message: "document does not exists" });
-    res.send({ data });
+      return res
+        .status(404)
+        .send({ result: "Document not found", status: "error" });
+
+    res.status(200).send({
+      result: data,
+      status: "ok",
+    });
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -47,7 +56,11 @@ const createProductStore = async (req, res) => {
   try {
     const body = matchedData(req);
     const data = await productStorageModel.create(body);
-    res.send({ data });
+    //res.send({ data });
+    res.status(200).send({
+      result: data,
+      status: "ok",
+    });
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -62,11 +75,16 @@ const updateProductStore = async (req, res) => {
       where: { id },
     });
     if (!data)
-      return res.status(404).json({ message: "document does not exists" });
+      return res
+        .status(404)
+        .send({ result: "Document not found", status: "error" });
 
     data.set(body);
     data.save();
-    res.send({ data });
+    res.status(200).send({
+      result: data,
+      status: "ok",
+    });
   } catch (e) {
     handleHttpError(res, e);
   }

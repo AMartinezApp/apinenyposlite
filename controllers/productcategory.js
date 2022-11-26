@@ -20,7 +20,10 @@ const { handleHttpError } = require("../utils/handleError");
 const getProductCategorys = async (req, res) => {
   try {
     const data = await productCategoryModel.findAll();
-    res.send({ data });
+    res.status(200).send({ 
+      result: data,
+      status: 'ok'
+    });
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -35,8 +38,8 @@ const getProductCategory = async (req, res) => {
       where: { id },
     });
     if (!data)
-      return res.status(404).json({ message: "document does not exists" });
-    res.send({ data });
+        return res.status(404).send({ result: 'Document not found',status: 'error'} );
+    res.send( data );
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -47,7 +50,10 @@ const createProductCategory = async (req, res) => {
   try {
     const body = matchedData(req);
     const data = await productCategoryModel.create(body);
-    res.send({ data });
+    res.status(200).send({ 
+      result: data,
+      status: 'ok'
+    });
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -62,11 +68,14 @@ const updateProductCategory = async (req, res) => {
       where: { id },
     });
     if (!data)
-      return res.status(404).json({ message: "document does not exists" });
+        return res.status(404).send({ result: 'Document not found',status: 'error'} );
 
     data.set(body);
     data.save();
-    res.send({ data });
+    res.status(200).send({ 
+      result: data,
+      status: 'ok'
+    } );
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -83,8 +92,8 @@ const deleteProductCategory = async (req, res) => {
       },
     });
     if (!data)
-      return res.status(404).json({ message: "document does not exists" });
-    res.send({ data });
+        return res.status(404).json({ message: "document does not exists" });
+    res.send( { data } );
   } catch (e) {
     handleHttpError(res, e);
   }

@@ -20,7 +20,9 @@ const { handleHttpError } = require("../utils/handleError");
 const getSettings = async (req, res) => {
   try {
     const data = await settingModel.findAll();
-    res.send({ data });
+    res.status(200).send(
+      data
+    );
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -35,8 +37,8 @@ const getSetting = async (req, res) => {
       where: { id },
     });
     if (!data)
-      return res.status(404).json({ message: "document does not exists" });
-    res.send({ data });
+        return res.status(404).send({ result: 'Document not found',status: 'error'} );
+    res.send( data );
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -47,7 +49,9 @@ const createSetting = async (req, res) => {
   try {
     const body = matchedData(req);
     const data = await settingModel.create(body);
-    res.send({ data });
+    res.status(201).send(
+      data
+    );
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -62,11 +66,13 @@ const updateSetting = async (req, res) => {
       where: { id },
     });
     if (!data)
-      return res.status(404).json({ message: "document does not exists" });
+        return res.status(404).send({ result: 'Document not found',status: 'error'} );
 
     data.set(body);
     data.save();
-    res.send({ data });
+    res.status(201).send(
+      data
+    );
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -83,8 +89,8 @@ const deleteSetting = async (req, res) => {
       },
     });
     if (!data)
-      return res.status(404).json({ message: "document does not exists" });
-    res.send({ data });
+        return res.status(404).send({ result: 'Document not found',status: 'error'} );
+    res.status(201).send(data);
   } catch (e) {
     handleHttpError(res, e);
   }
