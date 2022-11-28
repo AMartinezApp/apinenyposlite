@@ -12,7 +12,7 @@
 //Get validator marchedData
 const { matchedData } = require("express-validator");
 //Get the model instance
-const { userModel } = require("../models");
+const { userModel, userRoleModel } = require("../models");
 //Get the errors
 const { handleHttpError } = require("../utils/handleError");
 //Get libs for encrypt data
@@ -36,20 +36,19 @@ const loginUser = async (req, res) => {
     });
 
     if (!user) {
-      res.status(401).send({ 
-        result: 'CREDENTIALS_INVALID',
-        status: 'error'
-      } );
+      res.status(401).send({
+        result: "CREDENTIALS_INVALID",
+        status: "error",
+      });
       return;
     }
     const checkPassword = await compare(body.password, user.password);
 
-    if (!checkPassword) { 
-       
-      res.status(401).send({ 
-        result: 'CREDENTIALS_INVALID',
-        status: 'error'
-      } );
+    if (!checkPassword) {
+      res.status(401).send({
+        result: "CREDENTIALS_INVALID",
+        status: "error",
+      });
       return;
     }
 
@@ -62,8 +61,8 @@ const loginUser = async (req, res) => {
     };
 
     //
-     
-    res.send(data );
+
+    res.send(data);
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -76,9 +75,21 @@ const loginUser = async (req, res) => {
  */
 const getUsers = async (req, res) => {
   try {
-    const data = await userModel.find({});
-    data.set("password", undefined, { strict: false }); //Do not return password
-    res.send({ data });
+    const data = await userModel.findAll({
+      include: [{ model: userRoleModel, attributes: ["id", "name"] }],
+      attributes: [
+        "id",
+        "name",
+        "phone",
+        "email",
+        "status",
+        "createdAt",
+        "updatedAt",
+      ],
+    });
+    console.log(data);
+
+    res.status(200).send(data);
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -93,10 +104,15 @@ const getUser = async (req, res) => {
   try {
     req = matchedData(req);
     const { id } = req;
-    console.log(id);
+
     const data = await userModel.findOne({ [propertiesKey.id]: id });
-    data.set("password", undefined, { strict: false }); //Do not return password
-    res.send({ data });
+
+    data.set("password", undefined, { strict: false });
+    if (!data)
+      return res
+        .status(404)
+        .send({ result: "Document not found", status: "error" });
+    res.status(200).send(data);
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -109,9 +125,10 @@ const getUser = async (req, res) => {
  */
 const createUser = async (req, res) => {
   try {
-    req = matchedData(req);
-    const password = await encrypt(req.password); //Encrypt password
-    const body = { ...req, password };
+    // req = matchedData(req.body); ver porqué esto estaba funcionando y luego no
+    const password = await encrypt(req.body.password); //Encrypt password
+
+    const body = { ...req.body, password };
 
     const dataUser = await userModel.create(body); //Create user
 
@@ -120,10 +137,8 @@ const createUser = async (req, res) => {
       token: await singToken(dataUser),
       user: dataUser,
     };
-    
-    
-    res.send({ data }); //Return data
 
+    res.status(201).send(data);
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -136,19 +151,13 @@ const createUser = async (req, res) => {
  */
 const updateUser = async (req, res) => {
   try {
-    /**
-     * Get:
-     * {
-     * id: id of user to update
-     * }
-     *
-     * {
-     * body: details of user to update
-     * }
-     */
     const { id, ...body } = matchedData(req);
     const data = await userModel.findOneAndUpdate(id, body);
-    res.send({ data });
+    if (!data)
+      return res
+        .status(404)
+        .send({ result: "Document not found", status: "error" });
+    res.status(201).send(data);
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -164,7 +173,11 @@ const deleteUser = async (req, res) => {
     req = matchedData(req);
     const { id } = req;
     const data = await userModel.deleteOne({ where: id });
-    res.send({ data });
+    if (!data)
+      return res
+        .status(404)
+        .send({ result: "Document not found", status: "error" });
+    res.status(200).send(data);
   } catch (e) {
     handleHttpError(res, e);
   }

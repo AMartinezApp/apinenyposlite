@@ -20,10 +20,7 @@ const { handleHttpError } = require("../utils/handleError");
 const getProductCategorys = async (req, res) => {
   try {
     const data = await productCategoryModel.findAll();
-    res.status(200).send({ 
-      result: data,
-      status: 'ok'
-    });
+    res.status(200).send(data);
   } catch (e) {
     handleHttpError(res, e);
   }

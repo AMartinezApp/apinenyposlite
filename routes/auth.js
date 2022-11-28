@@ -16,7 +16,14 @@ const router = express.Router();
 const {
   createUser,
   loginUser,
+  getUsers,
+  updateUser
 } = require("../controllers/auth");
+
+//Get Middleware functions for checkAuth
+const checkAuth = require("../middleware/session");
+//Get Middleware functions for check idRol permission
+const authIdRol = require("../middleware/roleAuth");
 
 //Gets validation functions
 const {
@@ -24,8 +31,13 @@ const {
   validatorLogin,
 } = require("../validators/auth");
 
-//Create user
-router.post("/register", validatorCreateUser, createUser);
+//Get user list
+router.get("/users", checkAuth, authIdRol([1, 2, 3]), getUsers)
+
+router.put("/users/:id", checkAuth, authIdRol([1, 2]), updateUser)
+
+//Create user checkAuth, authIdRol([1, 2, 3]), validatorCreateUser,
+router.post("/register",  createUser);
 
 //Login user
 router.post("/login", validatorLogin, loginUser);

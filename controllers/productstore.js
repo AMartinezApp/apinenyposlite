@@ -20,10 +20,7 @@ const { handleHttpError } = require("../utils/handleError");
 const getProductStores = async (req, res) => {
   try {
     const data = await productStorageModel.findAll();
-    res.status(200).send({
-      result: data,
-      status: "ok",
-    });
+    res.status(200).send(data);
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -42,10 +39,7 @@ const getProductStore = async (req, res) => {
         .status(404)
         .send({ result: "Document not found", status: "error" });
 
-    res.status(200).send({
-      result: data,
-      status: "ok",
-    });
+    res.status(200).send(data);
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -57,10 +51,7 @@ const createProductStore = async (req, res) => {
     const body = matchedData(req);
     const data = await productStorageModel.create(body);
     //res.send({ data });
-    res.status(200).send({
-      result: data,
-      status: "ok",
-    });
+    res.status(201).send(data);
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -81,10 +72,7 @@ const updateProductStore = async (req, res) => {
 
     data.set(body);
     data.save();
-    res.status(200).send({
-      result: data,
-      status: "ok",
-    });
+    res.status(201).send(data);
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -102,7 +90,7 @@ const deleteProductStore = async (req, res) => {
     });
     if (!data)
       return res.status(404).json({ message: "document does not exists" });
-    res.send({ data });
+    res.status(200).send(data);
   } catch (e) {
     handleHttpError(res, e);
   }

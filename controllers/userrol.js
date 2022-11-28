@@ -20,7 +20,7 @@ const { handleHttpError } = require("../utils/handleError");
 const getUserRols = async (req, res) => {
   try {
     const data = await userRoleModel.findAll();
-    res.send({ data });
+    res.status(200).send(data);
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -35,8 +35,9 @@ const getUserRol = async (req, res) => {
       where: { id },
     });
     if (!data)
-      return res.status(404).json({ message: "document does not exists" });
-    res.send({ data });
+        return res.status(404).send({ result: 'Document not found',status: 'error'} );
+    res.send( data );
+    res.status(200).send(data);
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -44,50 +45,50 @@ const getUserRol = async (req, res) => {
 
 //Insert user rol
 const createUserRol = async (req, res) => {
-  try {
-    const body = matchedData(req);
-    const data = await userRoleModel.create(body);
-    res.send({ data });
-  } catch (e) {
-    handleHttpError(res, e);
-  }
+  // try {
+  //   const body = matchedData(req);
+  //   const data = await userRoleModel.create(body);
+  //   res.send({ data });
+  // } catch (e) {
+  //   handleHttpError(res, e);
+  // }
 };
 
 //Update user rol
 const updateUserRol = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const body = req.body;
-    const data = await userRoleModel.findOne({
-      where: { id },
-    });
-    if (!data)
-      return res.status(404).json({ message: "document does not exists" });
+  // try {
+  //   const { id } = req.params;
+  //   const body = req.body;
+  //   const data = await userRoleModel.findOne({
+  //     where: { id },
+  //   });
+  //   if (!data)
+  //     return res.status(404).json({ message: "document does not exists" });
 
-    data.set(body);
-    data.save();
-    res.send({ data });
-  } catch (e) {
-    handleHttpError(res, e);
-  }
+  //   data.set(body);
+  //   data.save();
+  //   res.send({ data });
+  // } catch (e) {
+  //   handleHttpError(res, e);
+  // }
 };
 
 //Delete user rol
 const deleteUserRol = async (req, res) => {
-  try {
-    req = matchedData(req);
-    const { id } = req;
-    const data = await userRoleModel.destroy({
-      where: {
-        id,
-      },
-    });
-    if (!data)
-      return res.status(404).json({ message: "document does not exists" });
-    res.send({ data });
-  } catch (e) {
-    handleHttpError(res, e);
-  }
+  // try {
+  //   req = matchedData(req);
+  //   const { id } = req;
+  //   const data = await userRoleModel.destroy({
+  //     where: {
+  //       id,
+  //     },
+  //   });
+  //   if (!data)
+  //     return res.status(404).json({ message: "document does not exists" });
+  //   res.send({ data });
+  // } catch (e) {
+  //   handleHttpError(res, e);
+  // }
 };
 
 module.exports = {

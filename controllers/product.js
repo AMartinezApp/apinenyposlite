@@ -76,7 +76,8 @@ const getProduct = async (req, res) => {
     });
     if (!data)
         return res.status(404).send({ result: 'Document not found',status: 'error'} );
-    res.send( data );
+
+    res.status(200).send(data);
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -87,9 +88,7 @@ const createProduct = async (req, res) => {
   try {
     const body = matchedData(req);
     const data = await productModel.create(body);
-    res.status(201).send(
-      data
-    );
+    res.status(201).send(data);
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -107,9 +106,7 @@ const updateProduct = async (req, res) => {
         return res.status(404).send({ result: 'Document not found',status: 'error'} );
     data.set(body);
     data.save();
-    res.status(201).send(
-      data
-    );
+    res.status(201).send(data);
   } catch (e) {
     handleHttpError(res, e);
   }

@@ -43,4 +43,9 @@ models.productTaxModel.hasMany(models.productModel, { foreignKey: "idtax" });
 
 models.productModel.belongsTo(models.productTaxModel, { foreignKey: "idtax" });
 
+//One to many relationship
+//One rol has many users
+models.userRoleModel.hasMany(models.userModel, {foreignKey: "idrole"});
+models.userModel.belongsTo(models.userRoleModel, {foreignKey: "idrole"});
+
 module.exports = models;
