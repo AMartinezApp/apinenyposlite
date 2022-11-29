@@ -19,7 +19,10 @@ const { handleHttpError } = require("../utils/handleError");
 // Get List of NcfType
 const getNcfTypes = async (req, res) => {
   try {
-    const data = await ncfTypeModel.findAll();
+    const data = await ncfTypeModel.findAll({
+      where: { status: "A" },
+      order: [["name", "ASC"]],
+    });
     res.send({ data });
   } catch (e) {
     handleHttpError(res, e);
@@ -32,11 +35,14 @@ const getNcfType = async (req, res) => {
     req = matchedData(req);
     const { id } = req;
     const data = await ncfTypeModel.findOne({
-      where: { id },
+      where: { id, status: "A" },
+      order: [["name", "ASC"]],
     });
     if (!data)
-      return res.status(404).json({ message: "document does not exists" });
-    res.send({ data });
+      return res
+        .status(404)
+        .send({ result: "Document not found", status: "error" });
+    res.status(200).send(data);
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -47,7 +53,7 @@ const createNcfType = async (req, res) => {
   try {
     const body = matchedData(req);
     const data = await ncfTypeModel.create(body);
-    res.send({ data });
+    res.status(201).send(data);
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -62,11 +68,13 @@ const updateNcfType = async (req, res) => {
       where: { id },
     });
     if (!data)
-      return res.status(404).json({ message: "document does not exists" });
+      return res
+        .status(404)
+        .send({ result: "Document not found", status: "error" });
 
     data.set(body);
     data.save();
-    res.send({ data });
+    res.status(201).send(data);
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -83,8 +91,10 @@ const deleteNcfType = async (req, res) => {
       },
     });
     if (!data)
-      return res.status(404).json({ message: "document does not exists" });
-    res.send({ data });
+      return res
+        .status(404)
+        .send({ result: "Document not found", status: "error" });
+    res.status(200).send(data);
   } catch (e) {
     handleHttpError(res, e);
   }

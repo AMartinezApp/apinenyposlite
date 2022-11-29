@@ -19,8 +19,11 @@ const { handleHttpError } = require("../utils/handleError");
 // Get List of products stores
 const getProductStores = async (req, res) => {
   try {
-    const data = await productStorageModel.findAll();
-    res.status(200).send(data);
+    const data = await productStorageModel.findAll({
+      where: { status: "A" },
+      order: [["name", "ASC"]],
+    });
+    res.status(201).send(data);
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -32,14 +35,15 @@ const getProductStore = async (req, res) => {
     req = matchedData(req);
     const { id } = req;
     const data = await productStorageModel.findOne({
-      where: { id },
+      where: { id, status: "A" },
+      order: [["name", "ASC"]],
     });
     if (!data)
       return res
         .status(404)
         .send({ result: "Document not found", status: "error" });
 
-    res.status(200).send(data);
+    res.status(201).send(data);
   } catch (e) {
     handleHttpError(res, e);
   }

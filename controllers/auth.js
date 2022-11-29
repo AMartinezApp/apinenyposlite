@@ -86,6 +86,8 @@ const getUsers = async (req, res) => {
         "createdAt",
         "updatedAt",
       ],
+      where: { status: "A" },
+      order: [["name", "ASC"]],
     });
     console.log(data);
 
@@ -154,9 +156,7 @@ const updateUser = async (req, res) => {
     const { id, ...body } = matchedData(req);
     const data = await userModel.findOneAndUpdate(id, body);
     if (!data)
-      return res
-        .status(404)
-        .send({ result: "Document not found", status: "error" });
+      return res.status(404).send({ result: "Document not found", status: "error" });
     res.status(201).send(data);
   } catch (e) {
     handleHttpError(res, e);

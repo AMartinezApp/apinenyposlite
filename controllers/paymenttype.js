@@ -19,8 +19,11 @@ const { handleHttpError } = require("../utils/handleError");
 // Get List of Payment Types 
 const getPaymentTypes = async (req, res) => {
   try {
-    const data = await paymentTypeModel.findAll();
-    res.send({ data });
+    const data = await paymentTypeModel.findAll({
+      where: { status: "A" },
+      order: [["name", "ASC"]],
+    });
+    res.status(201).send(data);
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -32,11 +35,14 @@ const getPaymentType = async (req, res) => {
     req = matchedData(req);
     const { id } = req;
     const data = await paymentTypeModel.findOne({
-      where: { id },
+      where: { id, status: "A" },
+      order: [["name", "ASC"]],
     });
     if (!data)
-      return res.status(404).json({ message: "document does not exists" });
-    res.send({ data });
+      return res
+        .status(404)
+        .send({ result: "Document not found", status: "error" });
+    res.status(200).send(data);
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -47,7 +53,7 @@ const createPaymentType = async (req, res) => {
   try {
     const body = matchedData(req);
     const data = await paymentTypeModel.create(body);
-    res.send({ data });
+    res.status(201).send(data);
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -62,11 +68,13 @@ const updatePaymentType = async (req, res) => {
       where: { id },
     });
     if (!data)
-      return res.status(404).json({ message: "document does not exists" });
+      return res
+        .status(404)
+        .send({ result: "Document not found", status: "error" });
 
     data.set(body);
     data.save();
-    res.send({ data });
+    res.status(201).send(data);
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -83,8 +91,10 @@ const deletePaymentType = async (req, res) => {
       },
     });
     if (!data)
-      return res.status(404).json({ message: "document does not exists" });
-    res.send({ data });
+      return res
+        .status(404)
+        .send({ result: "Document not found", status: "error" });
+    res.status(200).send(data);
   } catch (e) {
     handleHttpError(res, e);
   }

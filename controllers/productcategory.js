@@ -19,7 +19,10 @@ const { handleHttpError } = require("../utils/handleError");
 // Get List of items
 const getProductCategorys = async (req, res) => {
   try {
-    const data = await productCategoryModel.findAll();
+    const data = await productCategoryModel.findAll({
+      where: { status: "A" },
+      order: [["name", "ASC"]],
+    });
     res.status(200).send(data);
   } catch (e) {
     handleHttpError(res, e);
@@ -32,7 +35,8 @@ const getProductCategory = async (req, res) => {
     req = matchedData(req);
     const { id } = req;
     const data = await productCategoryModel.findOne({
-      where: { id },
+      where: { id, status: "A" },
+      order: [["name", "ASC"]],
     });
     if (!data)
         return res.status(404).send({ result: 'Document not found',status: 'error'} );

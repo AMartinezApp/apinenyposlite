@@ -40,6 +40,8 @@ const getProducts = async (req, res) => {
         "createdAt",
         "updatedAt",
       ],
+      where: { status: "A" },
+      order: [["name", "ASC"]],
     });
     const user = req.user;
     res.status(200).send(
@@ -57,7 +59,8 @@ const getProduct = async (req, res) => {
     req = matchedData(req);
     const { id } = req;
     const data = await productModel.findOne({
-      where: { id },
+      where: { id, status: "A" },
+      order: [["name", "ASC"]],
       include: [
         { model: productCategoryModel, attributes: ["name"] },
         { model: productStorageModel, attributes: ["name"] },
