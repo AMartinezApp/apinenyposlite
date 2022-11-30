@@ -23,7 +23,7 @@ const getNcfTypes = async (req, res) => {
       where: { status: "A" },
       order: [["name", "ASC"]],
     });
-    res.send({ data });
+    res.send(data);
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -65,7 +65,7 @@ const updateNcfType = async (req, res) => {
     const { id } = req.params;
     const body = req.body;
     const data = await ncfTypeModel.findOne({
-      where: { id },
+      where: { id, status: "A" },
     });
     if (!data)
       return res

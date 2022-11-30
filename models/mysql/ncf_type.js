@@ -37,6 +37,16 @@ const Ncf_type = sequelize.define(
       type: DataTypes.DATE(),
       allowNull:false
     },
+    status: {
+      type: DataTypes.ENUM("A", "D"),
+      allowNull: false,
+      defaultValue: "A",
+    },
+    tax: {
+      type: DataTypes.ENUM("true", "false"),
+      allowNull: false,
+      defaultValue: "false",
+    },
   },
   {
     timestamps: true,
@@ -54,4 +64,5 @@ module.exports = Ncf_type;
 //   `final_num` INT NOT NULL,
 //   `current_num` INT NOT NULL,
 //   `expiration` DATETIME NOT NULL, 
+
 // PRIMARY KEY (`id`));

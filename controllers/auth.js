@@ -32,7 +32,7 @@ const loginUser = async (req, res) => {
     const { email } = body;
 
     const user = await userModel.findOne({
-      where: { email },
+      where: { email, status: "A" }
     });
 
     if (!user) {
