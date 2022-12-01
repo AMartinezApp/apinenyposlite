@@ -34,6 +34,10 @@ const Invoice = sequelize.define(
       allowNull: false,
       defaultValue: "A",
     },
+    iduser: {
+      type: DataTypes.INTEGER(11),
+      allowNull: false,
+    },
   },
   {
     timestamps: true,

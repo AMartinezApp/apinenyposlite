@@ -10,15 +10,11 @@ const Ncf_type = sequelize.define(
       allowNull: false,
     },
     typedoc: {
-      type: DataTypes.CHAR(50),
-      allowNull: false,
-    },
-    typedoc: {
-      type: DataTypes.CHAR(50),
+      type: DataTypes.CHAR(2),
       allowNull: false,
     },
     prefix: {
-      type: DataTypes.CHAR(5),
+      type: DataTypes.CHAR(2),
       allowNull: false,
     },
     inicial_num: {
@@ -43,9 +39,13 @@ const Ncf_type = sequelize.define(
       defaultValue: "A",
     },
     tax: {
-      type: DataTypes.ENUM("true", "false"),
+      type: DataTypes.INTEGER(11),
       allowNull: false,
-      defaultValue: "false",
+      defaultValue: 1,
+    },
+    iduser: {
+      type: DataTypes.INTEGER(11),
+      allowNull: false,
     },
   },
   {

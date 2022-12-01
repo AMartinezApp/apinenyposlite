@@ -52,7 +52,9 @@ const getNcfType = async (req, res) => {
 const createNcfType = async (req, res) => {
   try {
     const body = matchedData(req);
+    console.log(body);
     const data = await ncfTypeModel.create(body);
+    
     res.status(201).send(data);
   } catch (e) {
     handleHttpError(res, e);

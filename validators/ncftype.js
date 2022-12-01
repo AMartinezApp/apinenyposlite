@@ -23,7 +23,8 @@ const validatorCreateNcfType = [
   check("final_num").exists().notEmpty().isNumeric(),
   check("current_num").exists().notEmpty().isNumeric(),
   check("expiration").exists().notEmpty().isDate(), 
-
+  check("tax").exists().notEmpty(),
+  check("iduser").exists().isNumeric(),
   (req, res, next) => {
     return validateResults(req, res, next);
   },
