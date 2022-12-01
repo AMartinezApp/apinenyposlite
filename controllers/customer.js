@@ -23,7 +23,7 @@ const getCustomers = async (req, res) => {
       where: { status: "A" },
       order: [["name", "ASC"]],
     });
-    res.status(201).send(data);
+    res.status(200).send(data);
   } catch (e) {
     handleHttpError(res, e);
   }

@@ -16,8 +16,8 @@ const Invoice_Detail = sequelize.define(
       type: DataTypes.CHAR(50),
       allowNull: false,
     },
-    idtax: {
-      type: DataTypes.INTEGER(11),
+    tax: {
+      type: DataTypes.FLOAT(12,2),
       allowNull: false,
     },
     quantity: {

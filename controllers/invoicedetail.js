@@ -19,8 +19,10 @@ const { handleHttpError } = require("../utils/handleError");
 // Get List of invoice
 const getInvoiceDetails = async (req, res) => {
   try {
-    const data = await invoiceDetailModel.findAll();
-    res.send({ data });
+    const data = await invoiceDetailModel.findAll({
+      order: [["productdetail", "ASC"]],
+    });
+    res.status(200).send(data);
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -35,8 +37,10 @@ const getInvoiceDetail = async (req, res) => {
       where: { id },
     });
     if (!data)
-      return res.status(404).json({ message: "document does not exists" });
-    res.send({ data });
+      return res
+        .status(404)
+        .send({ result: "Document not found", status: "error" });
+    res.status(200).send(data);
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -47,7 +51,7 @@ const createInvoiceDetail = async (req, res) => {
   try {
     const body = matchedData(req);
     const data = await invoiceDetailModel.create(body);
-    res.send({ data });
+    res.status(201).send(data);
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -62,11 +66,13 @@ const updateInvoiceDetail = async (req, res) => {
       where: { id },
     });
     if (!data)
-      return res.status(404).json({ message: "document does not exists" });
+      return res
+        .status(404)
+        .send({ result: "Document not found", status: "error" });
 
     data.set(body);
     data.save();
-    res.send({ data });
+    res.status(201).send(data);
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -83,8 +89,10 @@ const deleteInvoiceDetail = async (req, res) => {
       },
     });
     if (!data)
-      return res.status(404).json({ message: "document does not exists" });
-    res.send({ data });
+      return res
+        .status(404)
+        .send({ result: "Document not found", status: "error" });
+    res.status(200).send(data);
   } catch (e) {
     handleHttpError(res, e);
   }

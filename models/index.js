@@ -48,4 +48,11 @@ models.productModel.belongsTo(models.productTaxModel, { foreignKey: "idtax" });
 models.userRoleModel.hasMany(models.userModel, {foreignKey: "idrole"});
 models.userModel.belongsTo(models.userRoleModel, {foreignKey: "idrole"});
 
+//One to many relationship
+//One invoice has many details
+models.invoiceModel.hasMany(models.invoiceDetailModel, {foreignKey: "idinvoice"});
+models.invoiceDetailModel.belongsTo(models.invoiceModel, {foreignKey: "id"});
+
+
+
 module.exports = models;
