@@ -24,6 +24,10 @@ const Invoice_Detail = sequelize.define(
       type: DataTypes.FLOAT(12,2),
       allowNull: false,
     },
+    cost: {
+      type: DataTypes.FLOAT(12,2),
+      allowNull: false,
+    },
     price: {
       type: DataTypes.FLOAT(12,2),
       allowNull: false,

@@ -50,8 +50,11 @@ models.userModel.belongsTo(models.userRoleModel, {foreignKey: "idrole"});
 
 //One to many relationship
 //One invoice has many details
+//One customer has meny invoices
 models.invoiceModel.hasMany(models.invoiceDetailModel, {foreignKey: "idinvoice"});
 models.invoiceDetailModel.belongsTo(models.invoiceModel, {foreignKey: "id"});
+models.customerModel.hasMany(models.invoiceModel, {foreignKey: "idcustomer"});
+models.invoiceModel.belongsTo(models.customerModel, {foreignKey: "idcustomer"});
 
 
 

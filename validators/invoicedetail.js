@@ -21,6 +21,7 @@ const validatorCreateInvoiceDetail = [
   check("productdetail").exists().notEmpty(),
   check("idtax").exists().notEmpty().isNumeric(),
   check("quantity").exists().notEmpty().isNumeric(),
+  check("cost").exists().notEmpty().isNumeric(),
   check("price").exists().notEmpty().isNumeric(),
   check("discount").exists().notEmpty().isNumeric(), 
   (req, res, next) => {

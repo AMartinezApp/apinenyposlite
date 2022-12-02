@@ -12,7 +12,11 @@
 //Get validator marchedData
 const { matchedData } = require("express-validator");
 //Get the model instance
-const { invoiceModel, invoiceDetailModel } = require("../models");
+const {
+  invoiceModel,
+  invoiceDetailModel,
+  customerModel,
+} = require("../models");
 //Get the errors helper
 const { handleHttpError } = require("../utils/handleError");
 
@@ -20,12 +24,64 @@ const { handleHttpError } = require("../utils/handleError");
 const getInvoices = async (req, res) => {
   try {
     const data = await invoiceModel.findAll({
+      attributes: [
+        "id",
+        "condition",
+        "createdAt",
+        "expiration",
+        "idcustomer",
+        "ncf",
+        [
+          invoiceDetailModel.sequelize.fn(
+            "sum",
+            invoiceDetailModel.sequelize.col("invoices_details.cost")
+          ),
+          "total_cost",
+        ],
+        [
+          invoiceDetailModel.sequelize.fn(
+            "sum",
+            invoiceDetailModel.sequelize.col("invoices_details.quantity")
+          ),
+          "total_quantity",
+        ],
+        [
+          invoiceDetailModel.sequelize.fn(
+            "sum",
+            invoiceDetailModel.sequelize.col("invoices_details.price")
+          ),
+          "total_price",
+        ],
+        [
+          invoiceDetailModel.sequelize.fn(
+            "sum",
+            invoiceDetailModel.sequelize.col("invoices_details.discount")
+          ),
+          "total_discount",
+        ],
+        [
+          invoiceDetailModel.sequelize.fn(
+            "sum",
+            invoiceDetailModel.sequelize.col("invoices_details.tax")
+          ),
+          "total_tax",
+        ],
+      ],
+
       include: [
-        { model: invoiceDetailModel, attributes: ["id","idinvoice","idproduct","productdetail","quantity","price", "tax", "discount","credit_entry"]},
+        {
+          model: invoiceDetailModel,
+          attributes: [],
+        },
+        {
+          model: customerModel,
+          attributes: ["name", "email", "phone"],
+        },
       ],
       where: { status: "A" },
-      order: [["createdAt", "ASC"]],
+      group: ["invoices.id"],
     });
+
     res.status(200).send(data);
   } catch (e) {
     handleHttpError(res, e);
@@ -38,7 +94,63 @@ const getInvoice = async (req, res) => {
     req = matchedData(req);
     const { id } = req;
     const data = await invoiceModel.findOne({
+      attributes: [
+        "id",
+        "condition",
+        "createdAt",
+        "expiration",
+        "idcustomer",
+        "ncf",
+        [
+          invoiceDetailModel.sequelize.fn(
+            "sum",
+            invoiceDetailModel.sequelize.col("invoices_details.cost")
+          ),
+          "total_cost",
+        ],
+        [
+          invoiceDetailModel.sequelize.fn(
+            "sum",
+            invoiceDetailModel.sequelize.col("invoices_details.quantity")
+          ),
+          "total_quantity",
+        ],
+        [
+          invoiceDetailModel.sequelize.fn(
+            "sum",
+            invoiceDetailModel.sequelize.col("invoices_details.price")
+          ),
+          "total_price",
+        ],
+        [
+          invoiceDetailModel.sequelize.fn(
+            "sum",
+            invoiceDetailModel.sequelize.col("invoices_details.discount")
+          ),
+          "total_discount",
+        ],
+        [
+          invoiceDetailModel.sequelize.fn(
+            "sum",
+            invoiceDetailModel.sequelize.col("invoices_details.tax")
+          ),
+          "total_tax",
+        ],
+      ],
+
+      include: [
+        {
+          model: invoiceDetailModel,
+          attributes: [],
+        },
+        {
+          model: customerModel,
+          attributes: ["name", "email", "phone"],
+        },
+      ],
+
       where: { id, status: "A" },
+      group: ["invoices.id"],
     });
     if (!data)
       return res
