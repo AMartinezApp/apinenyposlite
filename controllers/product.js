@@ -28,7 +28,7 @@ const getProducts = async (req, res) => {
       include: [
         { model: productCategoryModel, attributes: ["id","name"] },
         { model: productStorageModel, attributes: ["id","name"] },
-        { model: productTaxModel, attributes: ["id","name"] },
+        { model: productTaxModel, attributes: ["id","name", "value"] },
       ],
       attributes: [
         "id",
@@ -64,7 +64,7 @@ const getProduct = async (req, res) => {
       include: [
         { model: productCategoryModel, attributes: ["name"] },
         { model: productStorageModel, attributes: ["name"] },
-        { model: productTaxModel, attributes: ["name"] },
+        { model: productTaxModel, attributes: ["name","value"] },
       ],
       attributes: [
         "id",
@@ -85,6 +85,40 @@ const getProduct = async (req, res) => {
     handleHttpError(res, e);
   }
 };
+
+//Get product details
+const getProductBarCode = async (req, res) => {
+  try {
+    req = matchedData(req);
+    const { id } = req;
+    const data = await productModel.findOne({
+      where: { barcode: id, status: "A" },
+      order: [["name", "ASC"]],
+      include: [
+        { model: productCategoryModel, attributes: ["name"] },
+        { model: productStorageModel, attributes: ["name"] },
+        { model: productTaxModel, attributes: ["name","value"] },
+      ],
+      attributes: [
+        "id",
+        "barcode",
+        "name",
+        "cost",
+        "price",
+        "status",
+        "createdAt",
+        "updatedAt",
+      ],
+    });
+    if (!data)
+        return res.status(404).send({ result: 'Document not found',status: 'error'} );
+
+    res.status(200).send(data);
+  } catch (e) {
+    handleHttpError(res, e);
+  }
+};
+
 
 //Insert product
 const createProduct = async (req, res) => {
@@ -136,6 +170,7 @@ const deleteProduct = async (req, res) => {
 module.exports = {
   getProducts,
   getProduct,
+  getProductBarCode,
   createProduct,
   updateProduct,
   deleteProduct,

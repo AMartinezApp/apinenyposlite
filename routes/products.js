@@ -16,9 +16,11 @@ const router = express.Router();
 const {
   getProducts,
   getProduct,
+  getProductBarCode,
   createProduct,
   updateProduct,
   deleteProduct,
+
 } = require("../controllers/product");
 
 //Gets validation functions
@@ -35,13 +37,22 @@ const authIdRol = require("../middleware/roleAuth");
 //Get products list
 router.get("/", checkAuth, authIdRol([1, 2, 3]), checkAuth, getProducts);
 
-//Get product details
+//Get product details 
 router.get(
   "/:id",
   checkAuth,
   authIdRol([1, 2, 3]),
   validatorIdProduct,
   getProduct
+);
+
+//Get product details by barcode
+router.get(
+  "/barcode/:id",
+  checkAuth,
+  authIdRol([1, 2, 3]),
+  validatorIdProduct,
+  getProductBarCode
 );
 
 //Create product

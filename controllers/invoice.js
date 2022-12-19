@@ -31,12 +31,20 @@ const getInvoices = async (req, res) => {
         "expiration",
         "idcustomer",
         "ncf",
+        "footer",
         [
           invoiceDetailModel.sequelize.fn(
             "sum",
             invoiceDetailModel.sequelize.col("invoices_details.cost")
           ),
           "total_cost",
+        ],
+        [
+          invoiceDetailModel.sequelize.fn(
+            "sum",
+            invoiceDetailModel.sequelize.col("invoices_details.price_unit")
+          ),
+          "total_price_unit",
         ],
         [
           invoiceDetailModel.sequelize.fn(
@@ -101,12 +109,20 @@ const getInvoice = async (req, res) => {
         "expiration",
         "idcustomer",
         "ncf",
+        "footer",
         [
           invoiceDetailModel.sequelize.fn(
             "sum",
             invoiceDetailModel.sequelize.col("invoices_details.cost")
           ),
           "total_cost",
+        ],
+        [
+          invoiceDetailModel.sequelize.fn(
+            "sum",
+            invoiceDetailModel.sequelize.col("invoices_details.price_unit")
+          ),
+          "total_price_unit",
         ],
         [
           invoiceDetailModel.sequelize.fn(

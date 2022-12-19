@@ -19,11 +19,11 @@ const validatorCreateInvoiceDetail = [
   check("idinvoice").exists().notEmpty().isNumeric(),
   check("idproduct").exists().notEmpty().isNumeric(),
   check("productdetail").exists().notEmpty(),
-  check("idtax").exists().notEmpty().isNumeric(),
+  check("tax").exists().notEmpty().isNumeric(),
   check("quantity").exists().notEmpty().isNumeric(),
   check("cost").exists().notEmpty().isNumeric(),
   check("price").exists().notEmpty().isNumeric(),
-  check("discount").exists().notEmpty().isNumeric(), 
+  check("price_unit").exists().notEmpty().isNumeric(),
   (req, res, next) => {
     return validateResults(req, res, next);
   },

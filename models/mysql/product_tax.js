@@ -14,7 +14,7 @@ const Product_Tax = sequelize.define(
     },
     status: {
       type: DataTypes.ENUM("A", "D"),
-      allowNull: false,
+      allowNull: true,
       defaultValue: "A",
     },
   },

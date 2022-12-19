@@ -16,15 +16,11 @@ const Invoice_Detail = sequelize.define(
       type: DataTypes.CHAR(50),
       allowNull: false,
     },
-    tax: {
-      type: DataTypes.FLOAT(12,2),
-      allowNull: false,
+    price_unit: {
+        type: DataTypes.FLOAT(12,2),
+        allowNull: false,
     },
     quantity: {
-      type: DataTypes.FLOAT(12,2),
-      allowNull: false,
-    },
-    cost: {
       type: DataTypes.FLOAT(12,2),
       allowNull: false,
     },
@@ -34,12 +30,21 @@ const Invoice_Detail = sequelize.define(
     },
     discount: {
       type: DataTypes.FLOAT(12,2),
+      defaultValue: 0,
+      allowNull: true,
+    },
+    tax: {
+      type: DataTypes.FLOAT(12,2),
+      allowNull: false,
+    },
+    cost: {
+      type: DataTypes.FLOAT(12,2),
       allowNull: false,
     },
     credit_entry: {
-      type: DataTypes.ENUM("true","false"),
-      defaultValue: "false",
-      allowNull: false,
+      type: DataTypes.FLOAT(12,2),
+      defaultValue: 0,
+      allowNull: true,
     },
   },
   {
@@ -49,14 +54,4 @@ const Invoice_Detail = sequelize.define(
 
 module.exports = Invoice_Detail;
 
-// CREATE TABLE `dbnenyposlite_v_1`.`invoices_details` (
-//   `id` INT NOT NULL AUTO_INCREMENT,
-//   `idinvoice` INT NOT NULL,
-//   `idproduct` INT NOT NULL,
-//   `productdetail` CHAR(50) NOT NULL,
-//   `idtax` INT NOT NULL,
-//   `quantity` FLOAT NOT NULL,
-//   `price` FLOAT NOT NULL,
-//   `discount` FLOAT NOT NULL,
-//   `credit_entry` ENUM('true', 'false') NOT NULL DEFAULT 'false’,
-// PRIMARY KEY (`id`));
+ 

@@ -9,7 +9,7 @@
  * @link http://amartinezdev.com/nenypos/api
  * */
 
-const handleHttpError = (res, message = "INTERNAL_ERROR", code = 403) => {
+const handleHttpError = (res, message = "INTERNAL_ERROR", code = 404) => {
   res.status(code);
   res.send({ error: message });
 };
