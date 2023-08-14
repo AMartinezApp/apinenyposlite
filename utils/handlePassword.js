@@ -1,6 +1,6 @@
 /**
  * =================================================================
- * HANDLE FOR ENCRYPTION PASSWORD
+ * HANDLE FOR ENCRYPTION PASSWORD 
  * =================================================================
  * @author AMartínezDev, I.E.R.L
  * @copyright Copyright (c) 2021-2030

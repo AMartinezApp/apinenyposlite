@@ -30,11 +30,13 @@ const loginUser = async (req, res) => {
   try {
     const body = matchedData(req);
     const { email } = body;
+    const { password } = body;
 
     const user = await userModel.findOne({
-      where: { email, status: "A" }
+      where: { email, status: "A" },
+      include: [{ model: userRoleModel, attributes: ["name"] }],
+      attributes: ["id", "name", "phone", "email", "status", "password"],
     });
-
     if (!user) {
       res.status(401).send({
         result: "CREDENTIALS_INVALID",
@@ -42,7 +44,7 @@ const loginUser = async (req, res) => {
       });
       return;
     }
-    const checkPassword = await compare(body.password, user.password);
+    const checkPassword = await compare(password, user.password);
 
     if (!checkPassword) {
       res.status(401).send({
@@ -58,11 +60,9 @@ const loginUser = async (req, res) => {
     const data = {
       token: tokenJwt,
       user: user,
-    };
+    }; 
 
-    //
-
-    res.send(data);
+    res.status(200).send(data);
   } catch (e) {
     handleHttpError(res, e);
   }
@@ -156,7 +156,9 @@ const updateUser = async (req, res) => {
     const { id, ...body } = matchedData(req);
     const data = await userModel.findOneAndUpdate(id, body);
     if (!data)
-      return res.status(404).send({ result: "Document not found", status: "error" });
+      return res
+        .status(404)
+        .send({ result: "Document not found", status: "error" });
     res.status(201).send(data);
   } catch (e) {
     handleHttpError(res, e);
